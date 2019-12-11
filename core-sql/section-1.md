@@ -115,6 +115,8 @@ Open the **create_schema.sql** file. Can you find the line of code that confirms
 
 Listed below are some of the most commonly used datatypes you'll come across in the **create_schema.sql** file. This is by no means a comprehensive list, not even close actually! 
 
+:book: [Read more](https://docs.oracle.com/cd/A58617_01/server.804/a58241/ch5.htm) about datatypes.
+
 Datatype | Description
 --- | ---
 varchar2(size) | Maximum size of 4000 bytes.
@@ -122,7 +124,15 @@ number(p,s) | Precision can range from 1 to 38. Scale can range from -84 to 127.
 date | A date between Jan 1, 4712 BC and Dec 31, 9999 AD.
 timestamp | Fractional seconds precision.
 
-:book: [Read more](https://docs.oracle.com/cd/A58617_01/server.804/a58241/ch5.htm) about datatypes.
+:bulb: Note that:
+
+Precision refers to the number of significant digits in a number. 
+> For example, the numbers 12.345 and 0.000012345 both have a precision of 5.
+
+Scale, on the other hand refers to the number of significant digits to the right of the decimal point, to and including the least significant digit. 
+> For example, 12.345 has a scale of 3 decimal places. 
+
+Similarly, negative scale refers to the number of significant digits to the left of the decimal point, to but not including the least significant digit.
 
 **Exercise 4** :computer: 
 
