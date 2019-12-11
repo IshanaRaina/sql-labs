@@ -126,10 +126,10 @@ timestamp | Fractional seconds precision.
 
 :bulb: Note that:
 
-Precision refers to the number of significant digits in a number. 
+**Precision** refers to the number of significant digits in a number. 
 > For example, the numbers 12.345 and 0.000012345 both have a precision of 5.
 
-Scale, on the other hand refers to the number of significant digits to the right of the decimal point, to and including the least significant digit. 
+**Scale**, on the other hand refers to the number of significant digits to the right of the decimal point, to and including the least significant digit. 
 > For example, 12.345 has a scale of 3 decimal places. 
 
 Similarly, negative scale refers to the number of significant digits to the left of the decimal point, to but not including the least significant digit.
