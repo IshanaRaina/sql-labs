@@ -120,8 +120,9 @@ timestamp | Fractional seconds precision.
 Take one last look (for now :wink:) at our favorite file **create_schema.sql** to go over the various datatypes that have been used in the `CREATE TABLE` statements. Note the nuances between datatypes that are the same yet allocate memory very differently based on the size that is passed as an argument to the datatype. 
 
 > For example,
-> Column | Datatype
-> --- | ---
-> FIRST_NAME | VARCHAR2(50)
-> MIDDLE_INITIAL | VARCHAR2(1)
-> EMAIL | VARCHAR2(255)
+
+Column | Datatype
+--- | ---
+FIRST_NAME | VARCHAR2(50)
+MIDDLE_INITIAL | VARCHAR2(1)
+EMAIL | VARCHAR2(255)
