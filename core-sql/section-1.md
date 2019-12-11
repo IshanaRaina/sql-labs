@@ -49,8 +49,8 @@ A row represents an instance of the data element that the table stores. A table 
 A column represents a piece of information in a table. It has both a name to identify the column and a datatype to specify the nature of data in that column.
 
 > For example, in the **API_CUSTOMER** table the `EMAIL` column is specified as:
-    > - type of _VARCHAR2_:  (a string) with a maximum length of 255 characters. 
-    > - _NOT NULL_ so whenever we have data in that table it must have a value in the `EMAIL` column.
+> - type of _VARCHAR2_:  (a string) with a maximum length of 255 characters. 
+> - _NOT NULL_ so whenever we have data in that table it must have a value in the `EMAIL` column.
 
 :bulb: A relational database usually consists of multiple tables. Together these tables comprise the **database model.** Note that there are many ways to represent the same set of data (using tables and columns). A database model is just one particular choice in terms of how to represent the data.
 
@@ -75,19 +75,26 @@ Spend 5 minutes :alarm_clock: to look at the `CREATE TABLE` statements in the  *
 
 ### DDL vs DML
 
-The exercise above provides a good segue into DDL and DML.
+The exercise above provides a good segue into DDL and DML. 
 
 Data Definition Language (DDL) | Data Manipulation Language (DML)
 --- | ---
 Keywords to access and manipulate objects or structures  such as views, tables and procedures. | Keywords to access and manipulate data. These statements are transactional in nature and can be committed or rolled back.
 Examples: CREATE, ALTER, DROP | Examples: SELECT, DELETE, UPDATE
 
-:book: [Read more](http://www.orafaq.com/wiki/SQL_FAQ#What_are_the_difference_between_DDL.2C_DML_and_DCL_commands.3F) for a discussion on the differences. 
+:book: [Read more](http://www.orafaq.com/wiki/SQL_FAQ#What_are_the_difference_between_DDL.2C_DML_and_DCL_commands.3F) for a discussion on the differences.
 
-### Primary Keys and References
+**Exercise 2** :computer:
 
-We often need to query our inserted data to find specific information, update it when needed, and in some cases, delete it. A **primary key** :key: is a combination of one or more columns on a table which together provide a unique identifier for a row in that table. When a primary key is defined, every row has a value and the value is different for every row.  Primary keys that use multiple columns are known as composite primary keys. Each table can only have one primary key defined. 
+The distinction between DDL and DML has been purposely created and the reason for that is access privileges. Imagine being the database administrator for this online pet store. 
+- Now consider the case of Alice - an analyst in your company. Would you be okay granting Alice the permissions to alter the database schema or accidentally delete a table or two? Think about her job responsibilities. She needs permissions to read the data in the tables so that she can create reports and perform her analysis. And it might also be beneficial to grant her permission to insert, update and delete the data. This is because analysts uncover a lot of errors with data during the data cleaning process such as duplicates, inconsistencies etc. Mind you, the important term here being **access to data** and not the database structure itself.
+- Next, consider Bob - an end user who is sitting in his mom's garage one day, and decides he wants to buy a cat. :cat: Obviously, he's going to need food to feed the cat so he settles on using API's API :joy: (what I mean is, the online pet store's Application Programming Interface) to place an order for Cat Food. What permissions should end users like Bob be granted?
 
+ ### Primary Keys and References
+
+We often need to query our inserted data to find specific information, update it when needed, and in some cases, delete it. But how do we find **exactly** the record we're looking for? Bob might tell you that manually searching the database is the answer. But I'm here to tell you, there's a better solution. And it's called a key! :key:
+
+A **primary key** :key: is a combination of one or more columns on a table which together provide a unique identifier for a row in that table. When a primary key is defined, every row has a value and the value is different for every row.  Primary keys that use multiple columns are known as composite primary keys. Each table can only have one primary key defined. 
 
 In many cases the data in various tables is related. The relation is maintained via **references**. A column(s) in one table will contain a value that references a specific row in another table via its primary key. 
 
@@ -100,7 +107,7 @@ The column in the child table that references the primary key in the parent tabl
 > - The column `CUSTOMER_ID` is the primary key :key: of API_CUSTOMER. The table API_CUSTOMER_ORDER keeps a reference to API_CUSTOMER in the column `CUSTOMER_ID`. 
 > - This makes API_CUSTOMER the parent table and API_CUSTOMER_ORDER the child table.
 
-**Exercise 2** :computer: 
+**Exercise 3** :computer: 
 
 Open the **create_schema.sql** file. Can you find the line of code that confirms the above example? 
 
@@ -117,7 +124,7 @@ timestamp | Fractional seconds precision.
 
 :book: [Read more](https://docs.oracle.com/cd/A58617_01/server.804/a58241/ch5.htm) about datatypes.
 
-**Exercise 3** :computer: 
+**Exercise 4** :computer: 
 
 Take one last look (for now :wink:) at our favorite file **create_schema.sql** to go over the various datatypes that have been used in the `CREATE TABLE` statements. Note the nuances between datatypes that are the same yet allocate memory very differently based on the size that is passed as an argument to the datatype. 
 
