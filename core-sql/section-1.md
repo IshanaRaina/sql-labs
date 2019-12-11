@@ -12,7 +12,7 @@ For this course we will be using a fictitious **online pet store called API**.
 :bell: A few pointers:
 - There are scripts to drop and re-create the database tables and other objects. This gives us the freedom to make any changes we want in the exercises and then be able to return to the standard setup with ease. 
     - The script **create_schema.sql** will drop and re-create all of the relevant objects and data.
-- All databases start with the term `API`.
+- All tables start with the term `API`.
 - Column names have been given meaningful names and their purpose should be fairly clear.
 - Primary keys are typically the table name (minus API) with an `_id` added at the end.
 - Foreign keys are named after the referenced primary key when possible. 
@@ -21,6 +21,8 @@ For this course we will be using a fictitious **online pet store called API**.
     - `CREATED_TIMESTAMP`
     - `MODIFIED_TIMESTAMP`
     - `MODIFIED_BY`
+
+Confused?! :anguished: Don't you worry, all of these terms will be explained next.
 
 ### Relations/Tables
 
