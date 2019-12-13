@@ -269,7 +269,7 @@ WHERE ROWNUM < 3;
 
 The `WHERE` clause allows us to enter a filter criteria and only records matching that criteria are retrieved.
 
-For example, the query below returns all columns from **API_CUSTOMER** whose last name is Doe and first name is John. 
+For example, the query below returns all columns from **API_CUSTOMER** whose last name matches Doe and first name matches John. 
 
 ```SQL
 SELECT * FROM API_CUSTOMER
