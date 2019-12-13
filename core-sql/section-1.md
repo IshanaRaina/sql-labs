@@ -145,3 +145,177 @@ Column | Datatype
 FIRST_NAME | VARCHAR2(50)
 MIDDLE_INITIAL | VARCHAR2(1)
 EMAIL | VARCHAR2(255)
+
+## Basic SQL Queries
+
+In this part, we'll cover writing basic DDL and DML queries. 
+
+### Create
+
+You've already spent a little time with the `CREATE` query in [Exercise 1](section-1.md#Columns) so I'll spare you and move on to the next DDL keyword!
+
+### Alter
+We all make mistakes and data requirements are ever changing. Hence the keyword `ALTER` allows you to change a table even after you've created it. There are many things that can be done while altering a table, although the most common are adding or changing an existing column and adding or changing constraints.
+
+For example, the query below adds a column `PHONE` with a datatype _VARCHAR2_ not exceeding _30_ characters in length to the table **API_CUSTOMER**.
+
+```SQL
+ALTER TABLE API_CUSTOMER 
+ADD (PHONE VARCHAR2(30));
+```
+
+:book: [Read more](https://docs.oracle.com/cd/E17952_01/refman-5.1-en/alter-table.html) about `ALTER TABLE`.
+
+### Drop
+Dropping a table not only means deleting its data but also its underlying structure. In essence, it removes the table from the database including all rows, indexes and privileges.
+
+```SQL
+DROP TABLE API_CUSTOMER;
+```
+
+:book: [Read more](https://docs.oracle.com/cd/B19306_01/server.102/b14200/statements_9003.htm) about `DROP TABLE`.
+
+:bulb: The series of steps to modify the data and structure of a database are collectively known as a **migration**.
+
+**Exercise 5** :computer: 
+Here's a thought experiment. Consider what it would take to add a `NOT NULL` column to a table that already has data. :hushed: 
+
+<details><summary>Solution:</summary>
+
+It is actually a multi-step process.
+- Add the new column as `NULL`.
+- Populate the column with data.
+- Then alter the column to `NOT NULL`.
+
+</details>
+
+### Comments
+Comments are part of the query which do not get executed and make it easier to read and maintain your code. They're a life saver when we want to try out various queries to see which one works without having to delete the others. They also serve as an efficient communication tool so that other people can try and make sense of the queries we write and vice versa. 
+
+:book: [Read more](https://docs.oracle.com/cd/B12037_01/server.101/b10759/sql_elements006.htm) about comments.
+
+Two ways to comment are:
+
+**1. Code Blocks**
+Begin with an asterisk and a slash. `/*` Add text comment. `*/` End with an asterisk and a slash. You do not need to separate the opening and closing characters with a space.
+
+```SQL
+/* This is a comment block. 
+It can be used to talk through what the query is intended to do.
+Comments like these come in handy during troubleshooting. */
+```
+
+**2. Inline Comments**
+Begin the comment with -- (two hyphens). Keep comment text to only 1 line. End the comment with a line break.
+
+```SQL
+SELECT * FROM API_CUSTOMER; --you'll be learning about the SELECT keyword next!
+```
+
+### Select
+
+Once data is stored in the database we need a way to retrieve said data. Retrieving the entire database every time and then going through it in the application is not a viable design. Therefore we need a way to find the exact set of data that we need. This may involve retrieving data from multiple tables at the same time, filtering out those rows we are not interested in, sorting the data and in some cases aggregating it. Queries to retrieve data are known as `SELECT` queries. 
+
+The simplest of them are those that operate on a single table and perform no aggregation just like the one below which retrieves all rows from the table **API_CUSTOMER**.
+
+
+```SQL
+SELECT * FROM API_CUSTOMER;
+```
+
+Here, the `*` means all columns from the given table. But what if we wanted only specific columns from that table? In that case, replace `*` with the corresponding column names.
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER;
+```
+
+**Exercise 6** :computer: 
+
+Go ahead and try it! 
+Write `SELECT` queries against tables from our core schema that you were introduced to in [Relations/Tables](section-1.md#Relations/Tables). 
+
+### Aliases
+
+Aliases give a database table, or a column in a table, a temporary name. As your queries grow in size, it gets more cumbersome to reference databases, tables and/or columns by their full names. Your query will also be more prone to typographical errors. All this hassle can be avoided by using short and sweet aliases. 
+
+```SQL
+SELECT FIRST_NAME AS f, LAST_NAME AS l FROM API_CUSTOMER;
+```
+
+If the above query were bigger and referenced the `FIRST_NAME` and `LAST_NAME` columns multiple times, we'd just be typing `f` and `l` instead. Convenient right? 
+
+**Exercise 7** :computer: 
+
+Give it a shot for a couple of minutes. And look closely at the output. Do the column names in the result change? 
+
+### Select + Where
+
+So far, we've learnt how to filter on the specific columns we want to see from a given table but what about the rows? Our queries are still returning all the rows present. In cases where tables contain hundreds of thousands of rows, we're using up a lot of resources trying to retrieve all that data, when in fact we might've been looking only for a subset of it. Enter the `WHERE` clause! 
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE LAST_NAME = 'Doe' AND FIRST_NAME = 'John';
+```
+
+**Exercise 8** :computer: 
+
+How about you try implementing the above query (or a similar query) with everything you've learnt so far? Incorporate comments, aliases and column selection in addition to the `WHERE` clause. 
+
+:books: Read more about the following:
+- full `SELECT` syntax supported by Oracle [here](https://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_10002.htm#SQLRF01702).
+- operators that can be used in queries [here](https://docs.oracle.com/html/A95915_01/sqopr.htm). Please review the **comparison** and **logical** operators. 
+
+### Insert
+
+Pretty straightforward - we use `INSERT` to add new data into our tables. 
+
+Two ways to insert are:
+
+**1. Insert a single row**
+Specify the exact value for each column. 
+
+```SQL
+INSERT INTO API_CUSTOMER (CUSTOMER_ID, FIRST_NAME, MIDDLE_INITIAL, LAST_NAME, TITLE, 
+    ALIAS, EMAIL, CREATED_TIMESTAMP, MODIFIED_TIMESTAMP, MODIFIED_BY)
+VALUES (1, 'John', 'D', 'Doe', 'Mr', 
+    'Johnny', 'johnny220680@gmailfake.com', systimestamp, systimestamp, 'system');
+```
+**2. Insert multiple rows**
+Pass the results of a `SELECT` into an `INSERT` statement. 
+
+:book: [Read more](https://www.techonthenet.com/oracle/insert.php) about `INSERT`.
+
+### Update
+
+We use `UPDATE` to change existing data. You can update one or more rows using a single `UPDATE` statement. Oracle will determine the rows to be updated based on the `WHERE` clause and will then execute the appropriate update operations on every row that matches the clause condition.
+
+For example, the query below updates John Doe's email in the **API_CUSTOMER** table.
+
+```SQL
+UPDATE API_CUSTOMER 
+SET EMAIL = 'johnny220680@yahoofake.com' 
+WHERE CUSTOMER_ID = 1;
+``` 
+
+:book: [Read more](https://www.techonthenet.com/oracle/update.php) about `UPDATE`.
+
+### Delete
+We use `DELETE` to delete data. You can delete one or more rows using a single `DELETE` statement. Similar to `UPDATE`, Oracle will determine the rows to be deleted based on the `WHERE` clause and will then execute the appropriate delete operation on every row that matches the clause condition.
+
+For example, the query below deletes John Doe's record from the **API_CUSTOMER** table.
+
+```SQL
+DELETE FROM API_CUSTOMER 
+WHERE CUSTOMER_ID = 1;
+```
+
+:book: [Read more](https://www.techonthenet.com/oracle/delete.php) about `DELETE`.
+
+:bulb: Modifying data using `INSERT`/`UPDATE`/`DELETE` statements is a DML operation and can therefore be done as part of a transaction.
+ 
+:bulb: Before we move on, here's a little cheatsheet for a database question that's asked in plenty of interviews - **What's the difference between `DELETE`, `TRUNCATE` and `DROP`?**
+
+DELETE | TRUNCATE | DROP
+--- | --- | ---
+Used to remove some or all rows from a table. A WHERE clause can be used to only remove some rows. If no WHERE condition is specified, all rows will be removed. | Used to remove all rows from a table. | Used to remove a table from the database. All the tables' rows, indexes and privileges will also be removed.
+After performing a DELETE operation, you need to COMMIT or ROLLBACK the transaction to make the change permanent or to undo it. | The operation cannot be rolled back. | The operation cannot be rolled back.
