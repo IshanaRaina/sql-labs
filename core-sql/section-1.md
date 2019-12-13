@@ -71,7 +71,7 @@ CREATE TABLE API_PACKAGE_TYPE (
 
 :book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about **`CREATE TABLE`**
 
-:alarm_clock: Spend 5 minutes to look at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder.
+Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder.
 
 ### DDL vs DML
 
@@ -80,7 +80,7 @@ The exercise above provides a good segue into DDL and DML.
 Data Definition Language (DDL) | Data Manipulation Language (DML)
 --- | ---
 Keywords to access and manipulate objects or structures  such as views, tables and procedures. | Keywords to access and manipulate data. These statements are transactional in nature and can be committed or rolled back.
-Examples: CREATE, ALTER, DROP | Examples: SELECT, DELETE, UPDATE
+Examples: CREATE, ALTER, DROP | Examples: SELECT, INSERT, UPDATE, DELETE
 
 :book: [Read more](http://www.orafaq.com/wiki/SQL_FAQ#What_are_the_difference_between_DDL.2C_DML_and_DCL_commands.3F) for a discussion on the differences.
 
