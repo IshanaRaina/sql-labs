@@ -49,7 +49,7 @@ A row represents an instance of the data element that the table stores. A table 
 A column represents a piece of information in a table. It has both a name to identify the column and a datatype to specify the nature of data in that column.
 
 > For example, in the **API_CUSTOMER** table the `EMAIL` column is specified as:
-> - type of _VARCHAR2_:  (a string) with a maximum length of 255 characters. 
+> - _VARCHAR2_:  a string datatype with a maximum length of 255 characters. 
 > - _NOT NULL_ so whenever we have data in that table it must have a value in the `EMAIL` column.
 
 :bulb: A relational database usually consists of multiple tables. Together these tables comprise the **database model.** Note that there are many ways to represent the same set of data (using tables and columns). A database model is just one particular choice in terms of how to represent the data.
