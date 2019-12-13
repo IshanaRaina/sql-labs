@@ -69,7 +69,7 @@ CREATE TABLE API_PACKAGE_TYPE (
          MODIFIED_BY             VARCHAR2(50));
 ```
 
-:book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about **`CREATE TABLE`**
+:book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about `CREATE TABLE`.
 
 Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder. While we have not covered many of the options yet, this should give you a good idea of the syntax for creating a table.
 
@@ -102,7 +102,7 @@ The table that contains a copy of the other table's primary key is called a **ch
 The table whose primary key is referenced is known as the **parent table**. 
 The column in the child table that references the primary key in the parent table is called a **foreign key**.
 
-> For example:
+> For example,
 > - The data in the table API_CUSTOMER_ORDER is related to the data in API_CUSTOMER (the orders belonging to a particular customer). 
 > - The column `CUSTOMER_ID` is the primary key :key: of API_CUSTOMER. The table API_CUSTOMER_ORDER keeps a reference to API_CUSTOMER in the column `CUSTOMER_ID`. 
 > - This makes API_CUSTOMER the parent table and API_CUSTOMER_ORDER the child table.
