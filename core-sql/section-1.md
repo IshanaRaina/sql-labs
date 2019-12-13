@@ -248,9 +248,28 @@ If the above query were bigger and referenced the `FIRST_NAME` and `LAST_NAME` c
 
 Give it a shot for a couple of minutes. And look closely at the output. Do the column names in the result change? 
 
+### Rownum
+
+So far, we've learnt how to filter on the specific columns we want to see from a given table but what about the rows? Our queries are still returning all the rows present. In cases where tables contain hundreds of thousands of rows, we're using up a lot of resources trying to retrieve all that data, when in fact we might've been looking only for a subset of it. Enter `ROWNUM`!
+
+The `ROWNUM` keyword allows us to specify the maximum number of desired rows. Any rows above that are discarded from the result set.
+
+For example, suppose we just wanted to see what a row in **API_CUSTOMER_ORDER** looked like but we did not care to retrieve all the records. We can just run the query: 
+
+```SQL
+SELECT * FROM API_CUSTOMER_ORDER 
+WHERE ROWNUM < 3;
+```
+
+:bulb: The column `ROWNUM` is a pseudocolumn that Oracle has available for use in queries. It is calculated at runtime based on the result set in question so you will not find it on disk.
+
 ### Select + Where
 
-So far, we've learnt how to filter on the specific columns we want to see from a given table but what about the rows? Our queries are still returning all the rows present. In cases where tables contain hundreds of thousands of rows, we're using up a lot of resources trying to retrieve all that data, when in fact we might've been looking only for a subset of it. Enter the `WHERE` clause! 
+`ROWNUM` is great but what if we were looking for specific records based on a certain criteria? After all, can you imagine life today without the search :mag_right: feature?! 
+
+The `WHERE` clause allows us to enter a filter criteria and only records matching that criteria are retrieved.
+
+For example, the query below returns all columns from **API_CUSTOMER** whose last name is Doe and first name is John. 
 
 ```SQL
 SELECT * FROM API_CUSTOMER
