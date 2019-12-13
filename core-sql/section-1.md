@@ -157,7 +157,7 @@ You've already spent a little time with the `CREATE` query in [Exercise 1](secti
 ### Alter
 We all make mistakes and data requirements are ever changing. Hence the keyword `ALTER` allows you to change a table even after you've created it. There are many things that can be done while altering a table, although the most common are adding or changing an existing column and adding or changing constraints.
 
-For example, the query below adds a column `PHONE` with a datatype _VARCHAR2_ not exceeding _30_ characters in length to the table **API_CUSTOMER**.
+> For example, the query below adds a column `PHONE` with a datatype _VARCHAR2_ not exceeding _30_ characters in length to the table **API_CUSTOMER**.
 
 ```SQL
 ALTER TABLE API_CUSTOMER 
@@ -216,8 +216,9 @@ SELECT * FROM API_CUSTOMER; --you'll be learning about the SELECT keyword next!
 
 Once data is stored in the database we need a way to retrieve said data. Retrieving the entire database every time and then going through it in the application is not a viable design. Therefore we need a way to find the exact set of data that we need. This may involve retrieving data from multiple tables at the same time, filtering out those rows we are not interested in, sorting the data and in some cases aggregating it. Queries to retrieve data are known as `SELECT` queries. 
 
-The simplest of them are those that operate on a single table and perform no aggregation just like the one below which retrieves all rows from the table **API_CUSTOMER**.
+The simplest of them are those that operate on a single table and perform no aggregation.  
 
+> For example, the query below retrieves all rows from the table **API_CUSTOMER**.
 
 ```SQL
 SELECT * FROM API_CUSTOMER;
@@ -246,7 +247,7 @@ If the above query were bigger and referenced the `FIRST_NAME` and `LAST_NAME` c
 
 **Exercise 7** :computer: 
 
-Give it a shot for a couple of minutes. And look closely at the output. Do the column names in the result change? 
+Give it a shot for a couple of minutes. And look closely at the output. :eyes: Do the column names in the result change? 
 
 ### Rownum
 
@@ -254,7 +255,7 @@ So far, we've learnt how to filter on the specific columns we want to see from a
 
 The `ROWNUM` keyword allows us to specify the maximum number of desired rows. Any rows above that are discarded from the result set.
 
-For example, suppose we just wanted to see what a row in **API_CUSTOMER_ORDER** looked like but we did not care to retrieve all the records. We can just run the query: 
+> For example, suppose we just wanted to see what a row in **API_CUSTOMER_ORDER** looked like but we did not care to retrieve all the records. We can just run the query: 
 
 ```SQL
 SELECT * FROM API_CUSTOMER_ORDER 
@@ -269,7 +270,7 @@ WHERE ROWNUM < 3;
 
 The `WHERE` clause allows us to enter a filter criteria and only records matching that criteria are retrieved.
 
-For example, the query below returns all columns from **API_CUSTOMER** whose last name matches Doe and first name matches John. 
+> For example, the query below returns all columns from **API_CUSTOMER** whose last name matches Doe and first name matches John. 
 
 ```SQL
 SELECT * FROM API_CUSTOMER
@@ -308,7 +309,7 @@ Pass the results of a `SELECT` into an `INSERT` statement.
 
 We use `UPDATE` to change existing data. You can update one or more rows using a single `UPDATE` statement. Oracle will determine the rows to be updated based on the `WHERE` clause and will then execute the appropriate update operations on every row that matches the clause condition.
 
-For example, the query below updates John Doe's email in the **API_CUSTOMER** table.
+> For example, the query below updates John Doe's email in the **API_CUSTOMER** table.
 
 ```SQL
 UPDATE API_CUSTOMER 
@@ -321,7 +322,7 @@ WHERE CUSTOMER_ID = 1;
 ### Delete
 We use `DELETE` to delete data. You can delete one or more rows using a single `DELETE` statement. Similar to `UPDATE`, Oracle will determine the rows to be deleted based on the `WHERE` clause and will then execute the appropriate delete operation on every row that matches the clause condition.
 
-For example, the query below deletes John Doe's record from the **API_CUSTOMER** table.
+> For example, the query below deletes John Doe's record from the **API_CUSTOMER** table.
 
 ```SQL
 DELETE FROM API_CUSTOMER 
@@ -343,7 +344,7 @@ After performing a DELETE operation, you need to COMMIT or ROLLBACK the transact
 
 In the queries we have looked at thus far, we obtain the desired set of data, but the order is left entirely to Oracle.  It is effectively a random order. SQL provides the ability to specify the order in which queries should return data. This is accomplished via the `ORDER BY` clause. The `ORDER BY` clause is placed after the `WHERE` clause and contains in order the list of columns that the results should be ordered by.
 
-For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query: 
+> For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query: 
 
 ```SQL
 SELECT * FROM API_CUSTOMER 
@@ -351,7 +352,7 @@ ORDER BY LAST_NAME, FIRST_NAME;
 ```
 Additionally, we can specify if we desire an ascending or descending order for each column by using the `ASC` and `DESC` keywords.
 
-For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query:
+> For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query:
 
 ```SQL
 SELECT * FROM API_CUSTOMER 
