@@ -338,3 +338,118 @@ DELETE | TRUNCATE | DROP
 --- | --- | ---
 Used to remove some or all rows from a table. A WHERE clause can be used to only remove some rows. If no WHERE condition is specified, all rows will be removed. | Used to remove all rows from a table. | Used to remove a table from the database. All the tables' rows, indexes and privileges will also be removed.
 After performing a DELETE operation, you need to COMMIT or ROLLBACK the transaction to make the change permanent or to undo it. | The operation cannot be rolled back. | The operation cannot be rolled back.
+
+### Sorting
+
+In the queries we have looked at thus far, we obtain the desired set of data, but the order is left entirely to Oracle.  It is effectively a random order. SQL provides the ability to specify the order in which queries should return data. This is accomplished via the `ORDER BY` clause. The `ORDER BY` clause is placed after the `WHERE` clause and contains in order the list of columns that the results should be ordered by.
+
+For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query: 
+
+```SQL
+SELECT * FROM API_CUSTOMER 
+ORDER BY LAST_NAME, FIRST_NAME;
+```
+Additionally, we can specify if we desire an ascending or descending order for each column by using the `ASC` and `DESC` keywords.
+
+For example, to obtain the list of customers ordered by their last name and then their first name, we would use the following query:
+
+```SQL
+SELECT * FROM API_CUSTOMER 
+ORDER BY LAST_NAME ASC, FIRST_NAME ASC;
+```
+
+:warning: Oracle will perform the sorting as specified, but there is no implied order beyond that.
+
+For example, consider the query:
+
+```SQL
+SELECT * FROM API_CUSTOMER 
+ORDER BY LAST_NAME ASC;
+```
+
+>In the case of our **API_CUSTOMERS** table, Lisa and Mark both have the same last name. There are no guarantees regarding the relative orders between two customers with the same last name. Sometimes it might be Mark, sometimes it might be Lisa. Even if you run the query once and get a given relative order, running the same query again after a few seconds might give a different relative order (even if it is the same set of results). 
+
+On small data sets the order appears stable, but in larger databases with larger volumes of data and more activity, relative order changes are very common. If your application requires that the order be stable (say to support pagination), a complete order must be specified. 
+This can be done by making sure that the combination of columns used in the order identifies a row uniquely. The simplest way to do this is by adding the primary key as the final column in the `ORDER BY`.
+
+```SQL
+SELECT * FROM API_CUSTOMER 
+ORDER BY LAST_NAME ASC, CUSTOMER_ID ASC;
+```
+
+### Top-N Queries
+
+Queries in which there is some type of sorting criteria and the top N rows per that sorting criteria are desired. `ROWNUM` makes sure that we only get the data we are interested in and it also allows the database to execute that query far faster than it would if were were to run the full query (without `ROWNUM`) and just consume the top N rows.
+
+Top-N queries take the form: 
+```SQL
+SELECT <column names> FROM (<the full query with sorting>) 
+WHERE ROWNUM <= N;
+```
+
+**Exercise 9** :computer: 
+
+Write a SQL query to retrieve the 2 largest customer orders.
+
+<details><summary>Solution:</summary>
+
+```SQL
+SELECT * FROM (
+SELECT * FROM API_CUSTOMER_ORDER 
+ORDER BY TOTAL_PRICE DESC
+) 
+WHERE ROWNUM <= 2;
+```
+
+</details>
+
+### Paginated Queries
+
+Queries that can be thought of as a refinement of a top-N query. In a paginated query we are interested in a page's worth of data, somewhere in the middle of an ordered result set.
+
+> For example, 
+Consider a screen where we can see the list of customers. As we click through the pages, we are interested only in the customers that should show up in the page. If we are in page 5, we do not need the customers for pages 1 through 4 or the customers from pages 6 and onwards. If we were displaying 50 customers per page, we would only want the customers in positions 201 through 250 based on our order.
+
+Here's how it's implemented.
+
+A paginated query will make use of `ROWNUM` twice - once to obtain the top-N results, and a second time to eliminate the leading portions of the result set that are not desired. 
+
+Paginated queries take the form:
+
+```SQL
+SELECT *
+FROM (
+   SELECT /*+ FIRST_ROWS(<upper limit>) */
+ALL_RESULTS.*,
+ROWNUM RNUM
+FROM (<the full query with sorting>) ALL_RESULTS
+WHERE ROWNUM <= <upper limit>
+)
+WHERE RNUM >= <lower limit>;
+```
+
+:book: [Read more](https://blogs.oracle.com/oraclemagazine/on-rownum-and-limiting-results) about `ROWNUM`, Top-N queries and pagination.
+
+**Exercise 10** :computer: 
+
+Suppose we wanted to search for order items and specified that the results be ordered by the ID of the item. Assuming 3 rows per page, we are interested in looking at page 2 (ie rows 4 through 6). Write the query that satisifies the given conditions.
+
+<details><summary>Solution:</summary>
+
+```SQL
+SELECT * 
+FROM (
+SELECT /*+ FIRST_ROWS(6) */
+ALL_RESULTS.*,
+ROWNUM RNUM
+FROM (SELECT * FROM API_CUSTOMER_ORDER_ITEM ORDER BY ITEM_ID, CUSTOMER_ORDER_ITEM_ID) ALL_RESULTS
+WHERE ROWNUM <= 6
+)
+WHERE RNUM >= 4;
+```
+
+The query above contains two subqueries:
+- The innermost subquery selects all of the rows from **API_CUSTOMER_ORDER_ITEM** and orders them. 
+- The second subquery is just a top-N query on that. The paginated query is a simple additional restriction to discard the leading portions that we are not interested in.
+
+</details>
