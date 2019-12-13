@@ -240,10 +240,12 @@ Write `SELECT` queries against tables from our core schema that you were introdu
 Aliases give a database table, or a column in a table, a temporary name. As your queries grow in size, it gets more cumbersome to reference databases, tables and/or columns by their full names. Your query will also be more prone to typographical errors. All this hassle can be avoided by using short and sweet aliases. 
 
 ```SQL
-SELECT FIRST_NAME AS f, LAST_NAME AS l FROM API_CUSTOMER;
+SELECT FIRST_NAME AS F, LAST_NAME AS L FROM API_CUSTOMER;
 ```
 
-If the above query were bigger and referenced the `FIRST_NAME` and `LAST_NAME` columns multiple times, we'd just be typing `f` and `l` instead. Convenient right? 
+If the above query were bigger and referenced the `FIRST_NAME` and `LAST_NAME` columns multiple times, we'd just be typing `F` and `L` instead. Convenient right? You'll come across this a lot when we learn about joins later on in the course.
+
+:bulb: Another way to write aliases is without the word `AS`. SQL accepts that to be syntactically correct as well. Therefore, writing the above query as `SELECT FIRST_NAME F, LAST_NAME L FROM API_CUSTOMER;` works just fine.
 
 **Exercise 7** :computer: 
 
