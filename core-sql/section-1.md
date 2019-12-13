@@ -71,7 +71,7 @@ CREATE TABLE API_PACKAGE_TYPE (
 
 :book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about **`CREATE TABLE`**
 
-Spend 5 minutes :alarm_clock: to look at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder.
+:alarm_clock: Spend 5 minutes to look at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder.
 
 ### DDL vs DML
 
