@@ -71,7 +71,7 @@ CREATE TABLE API_PACKAGE_TYPE (
 
 :book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about **`CREATE TABLE`**
 
-Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder.
+Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder. While we have not covered many of the options yet, this should give you a good idea of the syntax for creating a table.
 
 ### DDL vs DML
 
