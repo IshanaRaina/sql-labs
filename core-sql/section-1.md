@@ -1,6 +1,6 @@
 # Section 1
 
-## Introduction to SQL Concepts
+## Basic SQL Concepts
 SQL stands for **Structured** **Query** **Language** and is the query language used to interact with relational databases. 
 
 In case you're wondering about what a relational database is, it is any database that stores data in the form of **relations** or tables wherein the table is made up of rows and columns. A row, also callde a **tuple**, contains an individual record of the data whereas a column, also called an **attribute**, is an identifying feature of that record.
