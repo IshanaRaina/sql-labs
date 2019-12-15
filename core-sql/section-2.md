@@ -380,3 +380,72 @@ SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER WHERE LAST_NAME = 'Doe';
 ```
 
 :bulb: The set operators can be used more than once in the query. Oracle will apply precedence rules, however, it is strongly recommended that you use parentheses when the query could be confusing.
+
+### Exists (Semi Join)
+
+Sometimes we don't really care about the data in one of the tables, we just want to retrieve all the rows in A that have a matching row in B. In those cases it is better to use an `EXISTS` statement than one of the other join variations. This gives the Oracle optimizer more information to work with and also ensures that the cardinality of the result set matches the number of returned rows from A.
+
+> For example, in order to retrieve all items that appear in at least one order, we run a semi-join from **API_ITEM** to **API_CUSTOMER_ORDER_ITEM**:
+
+```SQl
+SELECT I.* FROM API_ITEM I
+WHERE EXISTS (
+SELECT 1 FROM API_CUSTOMER_ORDER_ITEM COI WHERE COI.ITEM_ID = I.ITEM_ID
+);
+```
+
+:book: [Read more](http://www.techonthenet.com/oracle/exists.php) about `EXISTS`.
+
+### In (Semi Join)
+
+Sometimes we want to return those rows where a column's value belongs to a set of values (with more than one value). This can often be done with a series of `OR` clauses, but that can get very messy and if the list needs to be determined at runtime, it will not work at all. 
+
+A better solution is to use the `IN` condition. 
+
+- An `IN` condition allows you to specify a set of hard-coded values that the column must have to meet.
+- You can also avoid hard-coding and use the results of a query. This is risky, because if the number of results exceeds a limit (configurable, but defaulted by Oracle to 1000) an error will be thrown during query execution. When using an IN condition in this way, consider replacing it with an `EXISTS` query (or changing the query in some other way).
+
+> For example, in order to retrieve all items named 'API Dog Food' or 'API Cat Food', we run a semi-join on **API_ITEM** using an `IN` condition:
+
+```SQL
+SELECT * FROM API_ITEM WHERE NAME IN ('API Dog Food', 'API Cat Food');
+```
+
+> Another example, in order to retrieve all items that appear in at least one order, we run a semi-join from **API_ITEM** to **API_CUSTOMER_ORDER_ITEM** using an `IN` condition: 
+
+```SQL
+SELECT I.* FROM API_ITEM I
+WHERE I.ITEM_ID IN (SELECT ITEM_ID FROM API_CUSTOMER_ORDER_ITEM COI);
+```
+
+:skull: Note that this is an example of how `IN` should **not** be used. The example in the `EXISTS` semi-join is the preferred alternative.
+
+:books: Read more about `IN`:
+- [Synatx and examples](http://www.techonthenet.com/oracle/in.php)
+- [Flow chart](http://docs.oracle.com/cd/B19306_01/server.102/b14200/conditions013.htm)
+
+### Not Exists (Anti Join)
+
+Sometimes we need to find all the rows in A for which there is not a matching row in B. 
+We can do this by adding a `NOT` operator in front of an `EXISTS` query.
+
+> For example, in order to retrieve all items that have never been ordered, we run an anti-join from **API_ITEM** to **API_CUSTOMER_ORDER_ITEM**:
+
+```SQL
+SELECT I.* FROM API_ITEM I
+WHERE NOT EXISTS (
+SELECT 1 FROM API_CUSTOMER_ORDER_ITEM COI WHERE COI.ITEM_ID = I.ITEM_ID
+);
+```
+
+### Not In (Anti Join)
+
+Sometimes we want to return those rows where a column's value is not in a specified set of values. This can be done by adding the `NOT` operator in front of an `IN` condition. The same warnings that applied to the `IN` condition apply to `NOT IN` (the alternative is `NOT EXISTS`).
+
+> For example, in order to retrieve all items other than 'API Dog Food' or 'API Cat Food', we run an anti-join on **API_ITEM** using a `NOT IN` condition:
+
+```SQL
+SELECT * FROM API_ITEM WHERE NAME NOT IN ('API Dog Food', 'API Cat Food');
+```
+
+:book: [Read more](http://docs.oracle.com/cd/B28359_01/server.111/b28286/queries006.htm) about `JOINS` in all their glory! :bomb:
