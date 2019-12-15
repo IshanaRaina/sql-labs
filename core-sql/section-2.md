@@ -287,3 +287,96 @@ ON DEPT.MANAGER_ID = MGR.EMPLOYEE_ID;
 </details>
 
 :bulb: Note that the join conditions used in the previous examples are based on the equality operator, but other operators are also allowed. We could have used <= or <> (to list a few) instead of = in the join condition of one of the previous example queries. This is fairly uncommon, but it is needed on occasion.
+
+## Set Operations
+There are operators that allow us to perform set operations on the results of queries.
+
+### Union
+The set of distinct (no repeats) rows from the union of the two result sets.
+
+> For example, the following query contains no repeats due to the operator being `UNION`.
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER 
+UNION
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER 
+WHERE LAST_NAME = 'Doe';
+```
+
+**Exercise 6** :computer: 
+
+List all salaries (ie employee salary, min salary and max salary) in a single column.
+
+<details><summary>Solution:</summary>
+
+```SQL
+SELECT SALARY FROM EMPLOYEES
+UNION
+SELECT MIN_SALARY FROM JOBS
+UNION
+SELECT MAX_SALARY FROM JOBS;
+```
+
+</details>
+
+### Union All
+The set of rows from the union of the two result sets, allowing repeats.
+
+> For example, the following query contains repeats due to the operator being `UNION ALL`.
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER
+UNION ALL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER 
+WHERE LAST_NAME = 'Doe';
+```
+
+**Exercise 7** :computer: 
+
+1. Access the HR database :arrow_forward: List the names of all employees followed by the names of all countries in a single column.
+2. Access the API database :arrow_forward: List first names of all customers whose last name is 'Johnson' and the last names of all customers whose last name is not 'Johnson', in a single column.
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT FIRST_NAME FROM EMPLOYEES
+UNION ALL
+SELECT COUNTRY_NAME FROM COUNTRIES;
+```
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+SELECT FIRST_NAME FROM API_CUSTOMER
+WHERE LAST_NAME = 'Johnson'
+UNION ALL
+SELECT LAST_NAME FROM API_CUSTOMER
+WHERE LAST_NAME <> 'Johnson';
+```
+</details>
+
+### Intersect
+The intersection between the two result sets.
+
+> For example, the following query contains the intersection of the two result sets.
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER
+INTERSECT
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER 
+WHERE LAST_NAME = 'Doe';
+```
+
+### Minus
+The first result set after removing all rows found in the second result set.
+
+> For example, the following query contains the results of the first query that are not in the second one.
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER
+MINUS
+SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER WHERE LAST_NAME = 'Doe';
+```
+
+:bulb: The set operators can be used more than once in the query. Oracle will apply precedence rules, however, it is strongly recommended that you use parentheses when the query could be confusing.
