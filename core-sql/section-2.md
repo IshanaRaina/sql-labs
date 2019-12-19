@@ -449,3 +449,208 @@ SELECT * FROM API_ITEM WHERE NAME NOT IN ('API Dog Food', 'API Cat Food');
 ```
 
 :book: [Read more](http://docs.oracle.com/cd/B28359_01/server.111/b28286/queries006.htm) about `JOINS` in all their glory! :bomb:
+
+## Additional Querying Techniques
+
+### Identifying unique values
+
+#### Select Distinct (Unique Values)
+
+In a table, a column may contain many duplicate values and sometimes you only want to list the different (distinct) values. The `DISTINCT` keyword is used to return only distinct (different) values.
+
+> For example, 
+
+`SELECT DISTINCT column_name,column_name FROM table_name;`
+
+#### Select DistinctRow (Unique Records)
+
+DISTINCTROW, on the other hand, checks all fields in the table that are being queried, and eliminates duplicates based on the entire record (not just the selected fields). Results of DISTINCTROW queries are updateable. 
+
+![](https://i.imgur.com/MPXPe0W.png)
+
+### Utilizing aggregate functions
+
+Aggregate Function | Description
+--- | ---
+MIN | Returns the smallest value in a given column
+MAX | Returns the largest value in a given column
+SUM | Returns the sum of the numeric values in a given column
+AVG | Returns the average value of a given column
+COUNT | Returns the total number of values in a given column
+COUNt(*) | Returns the number of rows in a table
+FIRST | Returns the first value
+LAST | Returns the last value
+
+> For example, listing out the biggest salary from the **API_EMPLOYEE** table would be as follows:
+
+```SQL
+SELECT MAX(SALARY) AS "BIGGEST SALARY" FROM API_EMPLOYEE;
+```
+
+**Exercise 8** :computer: 
+
+1. List the average salary from the **API_EMPLOYEE** table.
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT AVG(SALARY) AS "AVERAGE SALARY" FROM API_EMPLOYEE;
+```
+
+</details>
+
+
+### Group by clause 
+
+The `GROUP BY` clause will group the results into subsets determined by the distinct combinations of columns being grouped on. Each such subset will become one row. This is typically used in combination with aggregate expressions. Each aggregate function will return a single value.
+
+The `GROUP BY` expression is placed after the `WHERE` clause and before the `ORDER BY` clause. 
+
+> For example, the query below returns the total amount ordered by customers that are not named 'Johnson'.
+
+```SQL
+SELECT C.LAST_NAME, C.FIRST_NAME, SUM(CO.TOTAL_PRICE)
+FROM API_CUSTOMER C JOIN API_CUSTOMER_ORDER CO 
+ON C.CUSTOMER_ID = CO.CUSTOMER_ID
+WHERE C.LAST_NAME <> 'Johnson'
+GROUP BY C.LAST_NAME, C.FIRST_NAME
+ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
+```
+
+**Exercise 9** :computer: 
+
+1. List the biggest salaries by state.
+2. List the average bonuses by title. 
+3. List the average salary of employees by manager. 
+4. Calculate the total price for an order. **Hint**: Multiply price by count to get the total price. 
+5. Build upon the previous query. In addition, to the total price, list the order ID, the customer name who placed the order as well as the number of itemlines that made up the order. 
+6. Display all the relevant aggregate functions for salary along with first and last names. Group the results by first and last name and for ease of readability, order them in ascending order of first and last name.
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT STATE_CODE AS "STATE", MAX(SALARY) AS "BIGGEST SALARY" 
+FROM API_EMPLOYEE
+GROUP BY STATE_CODE;
+```
+
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+SELECT TITLE, AVG(BONUS_PERCENT) AS "BONUS" 
+FROM API_EMPLOYEE
+GROUP BY TITLE 
+ORDER BY BONUS DESC;
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+SELECT AVG(EMP.SALARY) AS AVG_SALARY, MGR.FIRST_NAME , MGR.LAST_NAME
+FROM API_EMPLOYEE EMP INNER JOIN API_EMPLOYEE MGR
+ON EMP.MANAGER_ID = MGR.EMPLOYEE_ID
+GROUP BY MGR.FIRST_NAME,MGR.LAST_NAME
+ORDER BY AVG_SALARY DESC;
+```
+
+</details>
+
+<details><summary>Solution 4:</summary>
+
+```SQL
+SELECT OI.CUSTOMER_ORDER_ID, SUM(OI.ITEM_COUNT * I.PRICE) AS "TOTAL"
+FROM API_CUSTOMER_ORDER_ITEM OI INNER JOIN API_ITEM I
+ON OI.ITEM_ID = I.ITEM_ID
+GROUP BY OI.CUSTOMER_ORDER_ID;
+```
+
+</details>
+
+<details><summary>Solution 5:</summary>
+
+```SQL
+SELECT 
+    C.FIRST_NAME || ' ' || C.LAST_NAME as "Customer", 
+    OI.Customer_Order_ID as "OrderNum", 
+    SUM(OI.ITEM_COUNT * I.PRICE) as "Total", 
+    COUNT(*) as ItemLines
+FROM API_ITEM I INNER JOIN API_CUSTOMER_ORDER_ITEM OI
+ON I.ITEM_ID = OI.ITEM_ID
+INNER JOIN API_CUSTOMER_ORDER O
+ON OI.CUSTOMER_ORDER_ID = O.CUSTOMER_ORDER_ID
+INNER JOIN api_customer C
+ON O.CUSTOMER_ID = C.CUSTOMER_ID
+GROUP BY OI.CUSTOMER_ORDER_ID, C.FIRST_NAME, C.LAST_NAME;
+```
+
+</details>
+
+<details><summary>Solution 6:</summary>
+
+```SQL
+SELECT 
+   SUM(SALARY) AS "TOTAL_SALARY",
+   AVG(SALARY) AS "AVG_SALARY",
+   MIN(SALARY) AS "MIN_SALARY",
+   MAX(SALARY) AS "MAX_SALARY",
+   COUNT(SALARY) AS "SALARY_COUNT",
+   FIRST_NAME, LAST_NAME  --  NOT AGGREGATE FN SO MUST BE IN GROUP BY
+FROM API_EMPLOYEE
+GROUP BY FIRST_NAME,LAST_NAME
+ORDER BY FIRST_NAME,LAST_NAME;
+```
+
+</details>
+
+### Having clause 
+
+> For example, the query below refines the previous example by adding the count of the number of ordered items and only returning data for customers that have ordered over $50.
+
+```SQL
+SELECT C.LAST_NAME, C.FIRST_NAME, SUM(CO.TOTAL_PRICE), SUM(COI.ITEM_COUNT)
+FROM API_CUSTOMER C JOIN API_CUSTOMER_ORDER CO 
+ON C.CUSTOMER_ID = CO.CUSTOMER_ID
+JOIN API_CUSTOMER_ORDER_ITEM COI 
+ON CO.CUSTOMER_ORDER_ID = COI.CUSTOMER_ORDER_ID
+WHERE C.LAST_NAME <> 'Johnson'
+GROUP BY C.LAST_NAME, C.FIRST_NAME
+HAVING SUM(CO.TOTAL_PRICE) >= 50
+ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
+```
+
+**Exercise 10** :computer: 
+1. List the states where the average salary is greater than $100,000. Also list the average salary amount.
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT STATE_CODE, AVG(SALARY)
+FROM API_EMPLOYEE
+GROUP BY STATE_CODE
+HAVING AVG(SALARY) > 100000;
+```
+
+</details>
+
+:bulb: It is possible to have more than one aggregate expression for a given `GROUP BY` clause. 
+Additionally the aggregate expression(s) can be used to limit the results returned by adding a `HAVING` clause to the query after the `GROUP BY` clause but before the `ORDER BY` clause.
+
+> For example, the query below reports on the total sales (by dollars and by number of items sold) of each product line. For each product line, it reports the total per product line and the breakdown per package type.
+
+```SQL
+SELECT I.NAME, PT.CODE, SUM(CO.TOTAL_PRICE), SUM(COI.ITEM_COUNT)
+FROM API_CUSTOMER_ORDER CO JOIN API_CUSTOMER_ORDER_ITEM COI 
+ON CO.CUSTOMER_ORDER_ID = COI.CUSTOMER_ORDER_ID
+JOIN API_ITEM I 
+ON I.ITEM_ID = COI.ITEM_ID
+JOIN API_PACKAGE_TYPE PT 
+ON PT.PACKAGE_TYPE_ID = I.PACKAGE_TYPE_ID
+GROUP BY ROLLUP(I.NAME, PT.CODE)
+ORDER BY I.NAME, PT.CODE ASC;
+```
+
+:bulb: It is possible to report on multiple combinations of the columns participating in the `GROUP BY` in a single query. This is done using the `ROLLUP` keyword. It effectively does a bunch of different `GROUP BY` statements and adds the results to the query output. The extra `GROUP BY` statements correspond to the following column combinations: the first column in the group by, the first two columns in the group by, the first three columns in the group by...and so on.
