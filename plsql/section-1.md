@@ -9,7 +9,7 @@ Let's keep the tradition alive!
 
 ```SQL
 BEGIN
-  DBMS_OUTPUT.put_line ('Hello World!');
+  DBMS_OUTPUT.PUT_LINE('Hello World!');
 END;
 ```
 
@@ -23,7 +23,7 @@ DECLARE
   sMessage varchar2(255); 
 BEGIN
   sMessage := 'Hello World!';
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 END;
 ```
 
@@ -37,10 +37,10 @@ DECLARE
   sMessage varchar2(255); 
 BEGIN
   sMessage := 'Hello World!';
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN OTHERS THEN
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;
 ```
 
@@ -56,13 +56,13 @@ DECLARE
   sMessage varchar2(255); 
 BEGIN
   sMessage := 'Deleted some items!';
-  DELETE FROM API_CUSTOMER_ORDER_ITEM WHERE ROWNUM < 5;
+  delete from API_CUSTOMER_ORDER_ITEM where rownum < 5;
   COMMIT;
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN OTHERS THEN
     ROLLBACK;
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;
 ```
 
@@ -75,14 +75,14 @@ DECLARE
 BEGIN
   sMessage := 'Deleted some items!';
   BEGIN
-    DELETE FROM API_CUSTOMER_ORDER_ITEM WHERE ROWNUM < 5;
+    delete from API_CUSTOMER_ORDER_ITEM where rownum < 5;
     COMMIT;
   EXCEPTION
   WHEN OTHERS THEN
     ROLLBACK;
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
   END;
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN OTHERS THEN
     DBMS_OUTPUT.put_line(SQLERRM);
@@ -100,10 +100,10 @@ DECLARE
 BEGIN
   sMessage := 'Ran after the error!';
   raise_application_error(-20001, 'Custom error message');
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN OTHERS THEN
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;
 ```
 
@@ -119,13 +119,13 @@ DECLARE
 BEGIN
   sMessage := 'Ran after the error!';
   RAISE custom_error;
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN custom_error THEN
-    DBMS_OUTPUT.put_line('Caught the custom error');
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE('Caught the custom error');
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
   WHEN OTHERS THEN
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;
 ```
 
@@ -138,14 +138,14 @@ DECLARE
 BEGIN
   sMessage := 'Ran after the error!';
   RAISE custom_error;
-  DBMS_OUTPUT.put_line(sMessage);
+  DBMS_OUTPUT.PUT_LINE(sMessage);
 EXCEPTION
   WHEN custom_error THEN
-    DBMS_OUTPUT.put_line('Caught the custom error');
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE('Caught the custom error');
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
     RAISE;
   WHEN OTHERS THEN
-    DBMS_OUTPUT.put_line(SQLERRM);
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
 END;
 ```
 
@@ -227,3 +227,157 @@ CALL DBMS_MVIEW.refresh('MV_API_CUSTOMER_ITEMS');
 ```
 
 Do you :eyes: the results now?
+
+## Exercises :computer: 
+
+Create views for the following in the **HR** database. Don't forget to `SELECT * FROM <view_name>` to see your results!
+1. Add a middle initial 'J' to all employee names and concatenate into a column called `Full_Name`.
+2. Show all first name duplicates among employees. 
+3. Grab all unique first names from employees and all departments into a single list of names.
+4. Show all employees and their departments. Are there any missing?
+5. Show average salary for each department. Does this show all departments?  And all salaries?
+6. Show the 5 highest paid employees.
+7. Show the 5 highest paid employees and their departments.
+8. Show all employee names and ID along with their region.
+9. Count the number of employees in each region.
+10. Let's have a little fun! :tada: Let's assume for a second that money :dollar: is everything! Create a view that highlights employees' dating ability based on their salary! Follow these rules:
+
+Salary Range | Eligibility Status :wink: 
+--- | ---
+> 10,000 | Marry
+6,000 - 9,000 | Date
+< 6,000 | Loser
+
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+CREATE VIEW MIDDLE AS 
+select Employee_id as ID
+  , First_Name || ' ' || 'J' || ' ' || Last_Name as Full_Name 
+from employees
+;
+```
+
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+CREATE VIEW V_DUPES AS 
+select First_Name, count(*) as Twins
+from employees
+group by First_Name
+having count(*) > 1
+order by First_Name
+;
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+CREATE VIEW BABYNAMES AS 
+select distinct first_name from employees
+union all --union all is faster since it doesn't look for duplicates
+select department_name from departments
+;
+```
+
+</details>
+
+<details><summary>Solution 4:</summary>
+
+```SQL
+CREATE VIEW V_EMP_DEPT AS 
+select First_Name, Last_Name, Department_Name
+from employees e join departments d 
+  on e.department_id = d.department_id
+;
+```
+
+</details>
+
+<details><summary>Solution 5:</summary>
+
+```SQL
+CREATE VIEW V_AVG_DEPT AS 
+select department_name, avg(salary) as avg_sal
+from departments d join employees e
+  on d.department_id = e.department_id
+group by department_name
+;
+```
+
+</details>
+
+<details><summary>Solution 6:</summary>
+
+```SQL
+CREATE VIEW V_TOP_EMP AS 
+select "FIRST_NAME","LAST_NAME","SALARY" 
+from (
+     select First_Name, Last_Name, Salary from employees
+     order by salary desc)
+where rownum <= 5
+;
+```
+
+</details>
+
+<details><summary>Solution 7:</summary>
+
+```SQL
+CREATE VIEW V_TOP_EMP2 AS 
+select "FIRST_NAME","LAST_NAME","SALARY","DEPARTMENT_NAME" 
+from (
+     select First_Name, Last_Name, Salary, Department_Name
+     from employees e join departments d 
+       on e.department_id=d.department_id
+     order by salary desc)
+where rownum <= 5
+;
+```
+
+</details>
+
+<details><summary>Solution 8:</summary>
+
+```SQL
+CREATE VIEW emp_by_region AS
+select r.Region_Name, e.Employee_ID, e.First_Name, e.Last_Name
+from   Regions r
+  join Countries c    on r.region_id     = c.region_id
+  join Locations l    on c.country_id    = l.country_id
+  join Departments d  on l.location_id   = d.location_id
+  join Employees e    on d.department_id = e.department_id;
+```
+
+</details>
+
+<details><summary>Solution 9:</summary>
+
+```SQL
+CREATE VIEW Region_Count AS
+select Region_Name, count(*) as Employees
+from emp_by_region
+group by Region_name;
+```
+
+</details>
+
+<details><summary>Solution 10:</summary>
+
+```SQL
+CREATE VIEW v_Dating AS
+select First_Name, Last_Name, Salary
+, case when salary >= 10000 then 'Marry' 
+       when salary >= 6000 then 'Date' 
+       else 'Loser' 
+  end as Advice
+from employees;
+```
+
+</details>
+
