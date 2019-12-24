@@ -244,9 +244,9 @@ Create views for the following in the **HR** database. Don't forget to `SELECT *
 
 Salary Range | Eligibility Status :wink: 
 --- | ---
-> 10,000 | Marry
-6,000 - 9,000 | Date
-< 6,000 | Loser
+Greater and equal to 10,000 | Marry
+6,000 - 9,999 | Date
+Less than 6,000 | Loser
 
 
 <details><summary>Solution 1:</summary>
