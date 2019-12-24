@@ -153,7 +153,7 @@ One last thing before we jump into exercises - **Oracle Dual Table**.
 
 In Oracle, `SELECT` statements have to be accompanied by a `FROM` clause. However, sometimes we write queries that don't particularly require any table. 
 
-> For example, what if I wanted to calculate the length of string 'Hello World!'? My query would look something like this:
+> For example, what if we wanted to calculate the length of string 'Hello World!'? My query would look something like this:
 
 ```SQL
 SELECT length('Hello World!') AS str_length
@@ -161,7 +161,7 @@ FROM ???
 ;
 ```
 
-I don't need any table to find the length of a given string but I have to use a `FROM` clause. This is where the DUAL table comes into play. It is a special table that belongs to the schema of the user SYS but is accessible to all users. The **DUAL table** has one column named `DUMMY` whose data type is _VARCHAR2()_ and contains one row with a value X.
+We don't need any table to find the length of a given string but I have to use a `FROM` clause. This is where the DUAL table comes into play. It is a special table that belongs to the schema of the user SYS but is accessible to all users. The **DUAL table** has one column named `DUMMY` whose data type is _VARCHAR2()_ and contains one row with a value X.
 
 > Using dual table, the query can be written as follows:
 
