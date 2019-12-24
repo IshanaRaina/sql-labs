@@ -10,7 +10,7 @@ Functions can perform queries and calculations using the provided parameters but
 
 A function is just a basic PL/SQL block with a `CREATE OR REPLACE` statement, a name, a declaration of the expected variables, and a declaration of the output type.
 
-> some stuff
+> Create a function that identifies large order weights. If weight and price of the order are both greater than 100, return the weight. If not, return null.
 
 ```SQL
 CREATE OR REPLACE FUNCTION largeOrderWeight(nPrice number, nWeight number) 
@@ -26,7 +26,7 @@ BEGIN
 
 END largeOrderWeight;
 ```
-A procedure is similar to the function, but with a different keyword and the return clause.
+A procedure is similar to the function above, but with a different keyword and no return clause.
 
 > Compare the above function with the stored procedure below.
 
@@ -146,3 +146,288 @@ BEGIN
   DBMS_OUTPUT.put_line('sItemName:' || sItemName || ' iItemCount:' || iItemCount);
 END printItemInfo;
 ```
+
+## Exercises :computer: 
+
+One last thing before we jump into exercises - **Oracle Dual Table**.
+
+In Oracle, `SELECT` statements have to be accompanied by a `FROM` clause. However, sometimes we write queries that don't particularly require any table. 
+
+> For example, what if I wanted to calculate the length of string 'Hello World!'? My query would look something like this:
+
+```SQL
+SELECT length('Hello World!') AS str_length
+FROM ???
+;
+```
+
+I don't need any table to find the length of a given string but I have to use a `FROM` clause. This is where the DUAL table comes into play. It is a special table that belongs to the schema of the user SYS but is accessible to all users. The **DUAL table** has one column named `DUMMY` whose data type is _VARCHAR2()_ and contains one row with a value X.
+
+> Using dual table, the query can be written as follows:
+
+```SQL
+SELECT length('Hello World!') AS str_length
+FROM dual
+;
+```
+
+:bulb: The reason this is important for the following exercises is: Oracle treats the use of DUAL the same as calling a function which simply evaluates the expression used in the `SELECT` statement.
+
+:alarm_clock: Access the **HR** database for the following exercises. 
+
+1. Remember the dating ability exercise you'd solved based on employees' salary? Let's build on that using a function. Use employee ID as your parameter and return the dating advice. Check your function against `<function_name>(101)`, `<function_name>(103)` and `<function_name>(106)`. Remeber to use the dual table. 
+2. Create a function that takes salary as the parameter and returns the dating advice. Check your function against `<function_name>(15000)`, `<function_name>(7000)` and `<function_name>(5)`.
+3. Create a test that uses the function created in step 2 and shows all employees with the advice.
+4.  Discuss what the biggest advantage of using salary instead of employee ID as the parameter is?  What is the disadvantage? 
+5. Create a function that takes employee ID as the parameter and returns the region name. Check your function against `<function_name>(101)`.
+6. Create a function that takes department ID as the parameter and returns the corresponding department name. Check your function against `<function_name>(90)`. Also, run the function against all department IDs.
+7. Repeat exercise step 6 but with a procedure. Check your procedure against `<procedure_name>(90)`.
+8. Food for thought - let's use the function to make the above procedure simpler.
+9. Create a procedure that takes employee ID and NewSalary as parameters. The procedure should update the salary to the new number. :bell: NewSalary should always be higher than the current salary.
+10. Create a function that returns a table of employees earning greater than 15,000.
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+CREATE OR REPLACE FUNCTION GoldDigger (sasquatch number)
+RETURN varchar2 
+IS advice varchar2(5);
+BEGIN
+  select 
+    case when salary >= 10000 then 'Marry' 
+       when salary >= 6000 then 'Date' 
+       else 'Loser' 
+    end into advice
+  from employees where employee_id = sasquatch;  
+  RETURN advice;
+END;
+```
+
+Checking the function:
+```SQL
+SELECT GoldDigger(101), GoldDigger(103), GoldDigger(106) 
+FROM dual;
+```
+
+</details>
+
+
+<details><summary>Alternative Solution 1:</summary>
+
+```SQL
+CREATE OR REPLACE FUNCTION GoldDigger2 (id number)
+RETURN varchar2
+IS
+sal number;
+BEGIN
+  select salary into sal from employees where employee_id = id;
+  if sal >= 10000 then return 'Marry';
+     elsif sal >= 6000 then return 'Date';
+     else return 'Loser';
+  end if;
+END GoldDigger2;
+```
+
+Checking the function:
+```SQL
+SELECT GoldDigger2(101), GoldDigger2(103), GoldDigger2(106) 
+FROM dual;
+```
+
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+CREATE FUNCTION GoldDigger3 (sal number)
+RETURN varchar2 AS
+BEGIN
+  if sal >= 10000 then return 'Marry';
+     elsif sal >= 6000 then return 'Date';
+     else return 'Loser';
+  end if;
+END GoldDigger3;
+```
+
+Checking the function:
+```SQL
+SELECT GoldDigger3(15000), GoldDigger3(7000), GoldDigger3(5) 
+FROM dual;
+```
+
+</details>
+
+<details><summary>Alternative Solution 2:</summary>
+
+```SQL
+CREATE FUNCTION GoldDigger4 (sal number)
+RETURN varchar2 AS 
+BEGIN
+  return (case when sal >= 10000 then 'Marry'
+               when sal >= 6000 then 'Date'
+               else 'Loser' end);
+END GoldDigger4;
+```
+
+Checking the function:
+```SQL
+SELECT GoldDigger4(15000), GoldDigger4(7000), GoldDigger4(5) 
+FROM dual;
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+SELECT First_Name, Last_Name, GoldDigger4(Salary) as Advice 
+FROM employees;
+```
+
+</details>
+
+<details><summary>Solution 5:</summary>
+
+```SQL
+CREATE OR REPLACE FUNCTION Emp_Region (id number) 
+RETURN varchar2 AS 
+region varchar2(50);
+BEGIN
+  select Region_Name into region from emp_by_region where employee_id = id;
+  return region;
+END;
+```
+Checking the function:
+```SQL
+SELECT Emp_Region(101) 
+FROM dual;
+```
+
+</details>
+
+<details><summary>Solution 6:</summary>
+
+```SQL
+CREATE OR REPLACE FUNCTION get_dept ( id number ) 
+  RETURN VARCHAR2
+IS
+  dept VARCHAR2(50) := 'Not Assigned';
+BEGIN  
+  select department_name INTO dept
+  from departments
+  where department_id = id;
+  RETURN dept;
+END;
+```
+Checking the function against 1 ID:
+```SQL
+SELECT get_dept(90) 
+FROM dual;
+```
+
+Checking the function against all IDs:
+```SQL
+SELECT first_name, last_name, get_dept(department_id) 
+FROM employees;
+```
+
+</details>
+
+<details><summary>Solution 7:</summary>
+
+```SQL
+CREATE OR REPLACE PROCEDURE get_dept_proc ( id number ) 
+IS
+  dept VARCHAR2(50);
+BEGIN  
+  select department_name INTO dept
+  from departments
+  where department_id = id;
+
+  DBMS_OUTPUT.PUT_LINE( dept );
+END;
+```
+
+Checking the procedure:
+```SQL
+SET SERVEROUTPUT ON;
+EXECUTE get_dept_proc(90);
+```
+
+</details>
+
+<details><summary>Solution 8:</summary>
+
+```SQL
+CREATE OR REPLACE PROCEDURE get_dept_proc2 ( id number ) 
+IS
+  dept VARCHAR2(50);
+BEGIN  
+  DBMS_OUTPUT.PUT_LINE( get_dept(id) );  
+END;
+```
+
+Checking the procedure:
+```SQL
+SET SERVEROUTPUT ON;
+EXECUTE get_dept_proc2(90);
+```
+
+</details>
+
+<details><summary>Solution 9:</summary>
+
+```SQL
+CREATE PROCEDURE set_salary (id number, NewSalary number)
+AS 
+BEGIN
+  update employees set salary = NewSalary
+  where employee_id = id
+    and NewSalary > salary;
+END;
+```
+
+Executing the procedure:
+```SQL
+-- current salary is 24000
+EXECUTE set_salary(100,25000); 
+```
+
+Checking the procedure:
+```SQL
+SELECT * 
+FROM employees 
+WHERE employee_id = 100;
+```
+
+</details>
+
+<details><summary>Solution 10:</summary>
+
+```SQL
+--1) Create the row definition
+CREATE TYPE TOP_SAL AS OBJECT (ID NUMBER, FIRST VARCHAR2(50), LAST VARCHAR2(50), 
+  SALARY NUMBER);
+
+--2) Create a table of TOP_SAL rows
+CREATE TYPE TOP_SAL_TBL AS TABLE OF TOP_SAL;
+
+--3) Create a FN that returns TOP_SAL_TBL
+CREATE OR REPLACE FUNCTION TOP_SAL_FN (SAL NUMBER)
+  RETURN TOP_SAL_TBL
+AS
+  ERICK_TBL TOP_SAL_TBL;
+BEGIN
+  SELECT TOP_SAL(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY)
+  BULK COLLECT INTO ERICK_TBL
+  FROM EMPLOYEES WHERE SALARY > SAL;
+  RETURN ERICK_TBL;
+END;
+```
+
+Checking the function:
+```SQL
+SELECT * FROM TABLE(TOP_SAL_FN(17000));
+```
+
+</details>
