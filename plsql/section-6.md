@@ -51,3 +51,49 @@ BEGIN
   END IF;
 END;
 ```
+
+## Exercises :computer: 
+
+This exercise entails creating a trigger for the purpose of auditing salary changes. 
+
+1. Create a table to store the audit data - we are interested in who made the change, when they made the change, old salary, new salary and employee ID of the person whose salary was changed. 
+2. Next, create a trigger that fires whenever an employee's salary gets updated. 
+3. Next, check to see if the trigger works to correctly populate the audit table.
+
+<details><summary>Solution:</summary>
+
+Step 1: 
+
+```SQL
+CREATE TABLE SPY_TBL (
+  WHO VARCHAR2(50), WHEN_DONE TIMESTAMP, OLD_SAL NUMBER(8,2) , NEW_SAL NUMBER(8,2) ,
+  EMP_ID NUMBER(6,0));
+```
+
+Step 2:
+
+```SQL
+CREATE OR REPLACE TRIGGER SPY_TRIGGER
+BEFORE UPDATE OF SALARY ON EMPLOYEES
+FOR EACH ROW
+BEGIN
+--Check to see if the salary has changed
+  IF :OLD.salary <> :NEW.salary THEN
+-- USER is current login, CURRENT_TIMESTAMP is current date/time
+    INSERT INTO SPY_TBL (WHO, WHEN_DONE, OLD_SAL, NEW_SAL, EMP_ID) 
+    VALUES (USER, CURRENT_TIMESTAMP, :OLD.SALARY, :NEW.SALARY, :NEW.EMPLOYEE_ID);
+  END IF;
+END;
+```
+
+Step 3:
+
+```SQL
+UPDATE EMPLOYEES SET SALARY=6004 WHERE EMPLOYEE_ID=104;
+```
+
+```SQL
+SELECT * FROM SPY_TBL;
+```
+
+</details>
