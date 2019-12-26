@@ -264,3 +264,7 @@ Did the value update?!
 - use the bulk collect operator (this is covered in a later module). 
 
 These later approaches are much faster and are usually easier to read. The same comment applies to inserts and deletes.
+
+:books: Read more about:
+- [cursors](https://www.techonthenet.com/oracle/cursors/index.php)
+- [loops](https://docs.oracle.com/cd/B28359_01/appdev.111/b28370/loop_statement.htm#LNPLS01328)
