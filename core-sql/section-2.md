@@ -490,11 +490,9 @@ SELECT * FROM API_ITEM WHERE NAME NOT IN ('API Dog Food', 'API Cat Food');
 
 :book: [Read more](http://docs.oracle.com/cd/B28359_01/server.111/b28286/queries006.htm) about `JOINS` in all their glory! :bomb:
 
-## Additional Querying Techniques
+## Unique values
 
-### Identifying unique values
-
-#### Select Distinct (Unique Values)
+### Select Distinct (Unique Values)
 
 In a table, a column may contain many duplicate values and sometimes you only want to list the different (distinct) values. The `DISTINCT` keyword is used to return only distinct (different) values.
 
@@ -502,7 +500,7 @@ In a table, a column may contain many duplicate values and sometimes you only wa
 
 `SELECT DISTINCT column_name,column_name FROM table_name;`
 
-#### Select DistinctRow (Unique Records)
+### Select DistinctRow (Unique Records)
 
 DISTINCTROW, on the other hand, checks all fields in the table that are being queried, and eliminates duplicates based on the entire record (not just the selected fields). Results of DISTINCTROW queries are updateable. 
 
@@ -522,7 +520,7 @@ GROUP BY DEPARTMENT_NAME;
 
 </details>
 
-### Utilizing aggregate functions
+## Aggregate functions
 
 Aggregate Function | Description
 --- | ---
@@ -540,6 +538,8 @@ LAST | Returns the last value
 ```SQL
 SELECT MAX(SALARY) AS "BIGGEST SALARY" FROM API_EMPLOYEE;
 ```
+
+:book: [Read more](https://docs.oracle.com/cd/E11882_01/server.112/e41084/functions003.htm#SQLRF20035) about aggregate functions.
 
 **Exercise 9** :computer: 
 
@@ -559,6 +559,7 @@ HAVING COUNT(*) > 3;
 
 </details>
 
+## Group by & Having
 
 ### Group by clause 
 
@@ -576,6 +577,8 @@ WHERE C.LAST_NAME <> 'Johnson'
 GROUP BY C.LAST_NAME, C.FIRST_NAME
 ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 ```
+
+:book: [Read more](https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj32654.html) about `GROUP BY`.
 
 **Exercise 10** :computer: 
 
@@ -687,6 +690,8 @@ GROUP BY C.LAST_NAME, C.FIRST_NAME
 HAVING SUM(CO.TOTAL_PRICE) >= 50
 ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 ```
+
+:book: [Read more](https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj14854.html) about `HAVING`.
 
 **Exercise 11** :computer: 
 1. Access the **API** database :arrow_forward: List the states where the average salary is greater than $100,000. Also list the average salary amount.
