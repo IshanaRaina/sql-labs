@@ -181,8 +181,9 @@ For troubleshooting purposes, if that returned what was expected, we would know 
 
 :bulb: The SQL-99 query is a very powerful mechanism to help with complex queries. If you are creating a complicated query and are struggling with the logic, the debugging or the tuning you should strongly consider re-writing it as a query using a `WITH` clause. Even if you fully understand the query logic, if it is complex enough to create problems for other people, you may want to consider using SQL-99.
 
-:book: [Read more](https://oracle-base.com/articles/misc/with-clause) about the `WITH` clause.
-
+:books: Read more about:
+- [subqueries](https://docs.oracle.com/cd/B19306_01/server.102/b14200/queries007.htm)
+- [`WITH` clause](https://oracle-base.com/articles/misc/with-clause)
 
 **Exercises** :computer: 
 
