@@ -96,15 +96,13 @@ ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 
 If there is a problem with the query, you can start with the simplest subquery, make sure that is working as expected (performance, results or anything else) and then move out to more complex subqueries.
 
-**Exercise** :computer: 
-
-For example, create a copy of the query and start selecting only subquery 1.
+> For example, create a copy of the query and start selecting only subquery 1.
 
 ```
 WITH subquery1Alias as (subquery 1 SQL)
 select * from  subquery1Alias;
 ``` 
-If that works, expand to include subquery 2.
+> If that works, expand to include subquery 2.
 
 ```
 WITH subquery1Alias as (subquery 1 SQL),
@@ -186,6 +184,80 @@ For troubleshooting purposes, if that returned what was expected, we would know 
 :book: [Read more](https://oracle-base.com/articles/misc/with-clause) about the `WITH` clause.
 
 
-**Exercise** :computer: 
+**Exercises** :computer: 
 
-Implementing subqueries for filtering to correct results.
+Acess the **HR** database :arrow_forward: 
+
+1. List out all employee details on the employee who earns the least salary.
+2. Building on the last query, who is the manager whose employee earns the least salary?
+3. Using a subquery, list the first 10 employees with the least salaries in ascending order.
+4. List all details on those employees who earn more than the average salary.
+5. List all details on 2 employees - the one who earns the most and the one who earns the least.
+6. List the employee first and last name, salary, average salary for his/her particular position and job title. Filter on those employees who make more than the average salary for their job. 
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT * FROM EMPLOYEES
+WHERE SALARY = (SELECT MIN(SALARY) FROM EMPLOYEES);
+```
+
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME FROM EMPLOYEES WHERE EMPLOYEE_ID IN
+    (SELECT MANAGER_ID FROM EMPLOYEES WHERE SALARY =
+       (SELECT MIN(SALARY) FROM EMPLOYEES)
+    );
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+SELECT * FROM (SELECT * FROM EMPLOYEES ORDER BY SALARY)
+WHERE ROWNUM < 11;
+```
+
+</details>
+
+<details><summary>Solution 4:</summary>
+
+```SQL
+SELECT * FROM EMPLOYEES 
+WHERE SALARY > (SELECT AVG(SALARY) FROM EMPLOYEES);
+```
+
+</details>
+
+<details><summary>Solution 5:</summary>
+
+```SQL
+SELECT * FROM EMPLOYEES 
+WHERE SALARY IN
+( 
+    SELECT MIN(SALARY) FROM EMPLOYEES
+    UNION
+    SELECT MAX(SALARY) FROM EMPLOYEES
+);
+```
+
+</details>
+
+<details><summary>Solution 6:</summary>
+
+```SQL
+SELECT FIRST_NAME, LAST_NAME, SALARY, AVGSAL, JOB_TITLE
+FROM EMPLOYEES E  JOIN
+(
+    SELECT  JOB_TITLE, AVG(SALARY) AS AVGSAL, E.JOB_ID
+    FROM EMPLOYEES E JOIN JOBS 
+    ON E.JOB_ID = JOBS.JOB_ID
+    GROUP BY JOB_TITLE, E.JOB_ID) T
+ON E.JOB_ID = T.JOB_ID AND E.SALARY > AVGSAL;
+```
+
+</details>
