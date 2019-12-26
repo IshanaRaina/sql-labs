@@ -100,6 +100,8 @@ EXCEPTION
 END deleteRows;
 ```
 
+:book: [Read more](https://docs.oracle.com/cd/B10501_01/appdev.920/a96590/adg09dyn.htm) about Dynamic SQL.
+
 ## Transactions
 Whenever DML changes are made in PL/SQL they are done as part of a transaction. The changes will not be visible outside of the transaction until they are committed. If PL/SQL is called from code that is already part of a transaction then, by default, all changes made by that PL/SQL code will be part of the same transaction. When you commit or rollback in PL/SQL you are committing or rolling back all of the changes made as part of that transaction.
 
@@ -150,6 +152,8 @@ END;
 ```
 :bulb: Had we just executed rollback, it would have rolled back everything.
 
+:book: [Read more](https://docs.oracle.com/database/121/CNCPT/transact.htm#CNCPT016) about transactions.
+
 ## Custom Datatypes
 Oracle provides a mechanism to create user defined types to extend the SQL language. A type is composed of three parts:
 
@@ -176,3 +180,5 @@ CREATE TYPE api_row_reference AS OBJECT
      MEMBER FUNCTION toString RETURN VARCHAR2 
    ); 
 ```
+
+:book: [Read more](https://docs.oracle.com/cd/A91202_01/901_doc/server.901/a88856/c14ordb.htm) about custom data types.
