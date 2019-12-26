@@ -228,6 +228,8 @@ CALL DBMS_MVIEW.refresh('MV_API_CUSTOMER_ITEMS');
 
 Do you :eyes: the results now?
 
+:book: [Read more](https://docs.oracle.com/cd/B28359_01/server.111/b28310/views001.htm#ADMIN11774) about views.
+
 ## Exercises :computer: 
 
 Create views for the following in the **HR** database. Don't forget to `SELECT * FROM <view_name>` to see your results!
