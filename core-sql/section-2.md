@@ -4,8 +4,6 @@
 
 So far, we've queried one table at a time but what if we want to retrieve data that lies in more than one table? Joins allow us to access data that resides in more than one table **inside of a single statement**.
 
-There are several types of joins to support the different ways in which we might want to combine the tables. When specifying a join we must choose a join type and then specify the columns on which the join must happen. The process can be repeated and additional tables can be joined to other tables already being used in the statement. Note that the same table can appear multiple times, and it can even be joined to itself (this is known as a self join which we will learn about in just a bit).
-
 > For example, to retrieve all items ordered by John Doe in one query we can execute the following:
 
 ```SQL
@@ -47,20 +45,24 @@ C.LAST_NAME = 'Doe' AND C.FIRST_NAME = 'John';
 
 The above is generally regarded as the less desirable approach - it is difficult to tell at a glance what the join conditions are and they are interspersed with other conditions to filter data.
 
-:warning: Let's bring into focus the **HR** database as well, in order to understand and implement the different kinds of joins. 
 
 ### Inner Join
 
 An inner join is one in which values from the two columns must exist and satisfy the join condition for either to be returned. If either side is missing the value, the other side will be not be included in the result set. 
 
 > For example, on joining **API_CUSTOMER** to **API_CUSTOMER_ORDER** with an inner join on `CUSTOMER_ID`, if a customer does not have any orders, that customer will not appear in the query results.
+> 
+:bulb: Before diving into the exercise, note that the join conditions used in the next examples are based on the equality operator, but other operators are also allowed. We can use `<=` or `<>` (to list a few) instead of `=` in the join condition of one of the next example queries. This is fairly uncommon, but it is needed on occasion.
 
 **Exercise 1** :computer: 
+
+Access the **HR** database :arrow_forward: 
 
 1. List the employee first and last names along with their job titles.
 2. List the employee first and last names along with their job titles for all employees whose last name is 'King'.
 3. List employee names, jobs, salary and max_salary only if those employees earn the max_salary or more.
 4. List department name, first and last name and job titles using the alternative join method that you saw above.
+5. Access the **API** database :arrow_forward: List the orders from largest to smallest and also show the first and last name of the customer who placed that order. 
 
 <details><summary>Solution 1:</summary>
 
@@ -101,6 +103,16 @@ AND E.JOB_ID = J.JOB_ID;
 ```
 </details>
 
+<details><summary>Solution 5:</summary>
+
+```SQL
+SELECT C.LAST_NAME, C.FIRST_NAME, CO.* 
+FROM API_CUSTOMER C JOIN API_CUSTOMER_ORDER CO 
+ON C.CUSTOMER_ID = CO.CUSTOMER_ID 
+ORDER BY TOTAL_PRICE DESC, LAST_NAME ASC, FIRST_NAME ASC;
+```
+</details>
+
 ### Outer Join
 
 An outer join is one in which rows from one table will be returned even if no match exists for the join condition on the other table. 
@@ -128,11 +140,13 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 2** :computer: 
 
+Access the **HR** database :arrow_forward: 
 1. List departments which have no employees. 
 2. List employees that don't belong to any department.
-3. List employees that don't belong to any department without using a join.
+3. List employees that don't belong to any department without using a join. :wink: 
 4. List the department name, first and last name and job titles of those employees whose first name is `NULL`. Replace the `NULL` first names with 'Harvey' in the result.
 5. List departments along with their manager's full names. 
+6. Access the **API** database :arrow_forward: List all items that have never been ordered. 
 
 <details><summary>Solution 1:</summary>
 
@@ -185,6 +199,16 @@ WHERE FIRST_NAME IS NOT NULL;
 ```
 </details>
 
+<details><summary>Solution 6:</summary>
+
+```SQL
+SELECT A.* FROM API_ITEM A 
+LEFT JOIN API_CUSTOMER_ORDER_ITEM B
+ON A.ITEM_ID = B.ITEM_ID
+WHERE B.ITEM_ID IS NULL;
+```
+</details>
+
 #### 2. Right Outer Join
 
 Right outer joins will join tables A and B and return all rows in B whether they have a match in A or not. 
@@ -201,7 +225,7 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 3** :computer: 
 
-Who let the dogs :dog2: out?! Oops, I meant, who bought the 'API Dog Food'?! List the item name and customer name.
+Access the **API** database :arrow_forward: Who let the dogs :dog2: out?! Oops, I meant, who bought the dog food'?! List the item name (ie 'API Dog Food') and customer name.
 
 <details><summary>Solution:</summary>
 
@@ -233,6 +257,7 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 4** :computer: 
 
+Access the **HR** database :arrow_forward: 
 1. List all employee first and last names along with all their corresponding department names and order the results in descending order of department.
 2. List all employees first and last names along with all their corresponding job titles where job title is `NULL`.
 
@@ -258,10 +283,14 @@ WHERE JOBS.JOB_ID IS NULL;
 
 ### Self Join
 
+As the name suggests, a self join is a join in which a given table is joined with itself. 
+
 **Exercise 5** :computer: 
 
+Access the **HR** database :arrow_forward: 
 1. List names of all managers and their employees, ordered by manager.
 2. Let's take it one step further - list employee's full name, the department they belong to followed by their manager's full name.
+3. Let's take it another step further! List employee's full name, employee's manager name, department name and the department manager's name.
 
 <details><summary>Solution 1:</summary>
 
@@ -286,7 +315,18 @@ ON DEPT.MANAGER_ID = MGR.EMPLOYEE_ID;
 ```
 </details>
 
-:bulb: Note that the join conditions used in the previous examples are based on the equality operator, but other operators are also allowed. We could have used <= or <> (to list a few) instead of = in the join condition of one of the previous example queries. This is fairly uncommon, but it is needed on occasion.
+<details><summary>Solution 3:</summary>
+
+```SQL
+SELECT E.FIRST_NAME || ' ' || E.LAST_NAME AS EMP, 
+    M.FIRST_NAME || ' ' || M.LAST_NAME AS EMPMGR, DEPARTMENT_NAME, 
+    DM.FIRST_NAME || ' ' || DM.LAST_NAME AS DEPTMGR, E.SALARY
+FROM EMPLOYEES E LEFT JOIN EMPLOYEES M ON E.MANAGER_ID = M.EMPLOYEE_ID
+LEFT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+LEFT JOIN EMPLOYEES DM ON DM.EMPLOYEE_ID = D.MANAGER_ID;
+```
+</details>
+
 
 ## Set Operations
 There are operators that allow us to perform set operations on the results of queries.
@@ -305,7 +345,7 @@ WHERE LAST_NAME = 'Doe';
 
 **Exercise 6** :computer: 
 
-List all salaries (ie employee salary, min salary and max salary) in a single column.
+Access the **HR** database :arrow_forward: List all salaries (ie employee salary, min salary and max salary) in a single column.
 
 <details><summary>Solution:</summary>
 
@@ -333,8 +373,8 @@ WHERE LAST_NAME = 'Doe';
 
 **Exercise 7** :computer: 
 
-1. Access the HR database :arrow_forward: List the names of all employees followed by the names of all countries in a single column.
-2. Access the API database :arrow_forward: List first names of all customers whose last name is 'Johnson' and the last names of all customers whose last name is not 'Johnson', in a single column.
+1. Access the **HR** database :arrow_forward: List the names of all employees followed by the names of all countries in a single column.
+2. Access the **API** database :arrow_forward: List first names of all customers whose last name is 'Johnson' and the last names of all customers whose last name is not 'Johnson', in a single column.
 
 <details><summary>Solution 1:</summary>
 
@@ -458,7 +498,7 @@ SELECT * FROM API_ITEM WHERE NAME NOT IN ('API Dog Food', 'API Cat Food');
 
 In a table, a column may contain many duplicate values and sometimes you only want to list the different (distinct) values. The `DISTINCT` keyword is used to return only distinct (different) values.
 
-> For example, 
+> For example, the syntax would look like:
 
 `SELECT DISTINCT column_name,column_name FROM table_name;`
 
@@ -466,7 +506,21 @@ In a table, a column may contain many duplicate values and sometimes you only wa
 
 DISTINCTROW, on the other hand, checks all fields in the table that are being queried, and eliminates duplicates based on the entire record (not just the selected fields). Results of DISTINCTROW queries are updateable. 
 
-![](https://i.imgur.com/MPXPe0W.png)
+**Exercise 8** :computer: 
+
+Access the **HR** database :arrow_forward: 
+
+1. List the department names and the number of distinct managers in that department. 
+
+<details><summary>Solution 1:</summary>
+
+```SQL
+SELECT DEPARTMENT_NAME, COUNT(DISTINCT E.MANAGER_ID) AS MGRCOUNT
+FROM EMPLOYEES E JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+GROUP BY DEPARTMENT_NAME;
+```
+
+</details>
 
 ### Utilizing aggregate functions
 
@@ -487,14 +541,20 @@ LAST | Returns the last value
 SELECT MAX(SALARY) AS "BIGGEST SALARY" FROM API_EMPLOYEE;
 ```
 
-**Exercise 8** :computer: 
+**Exercise 9** :computer: 
 
-1. List the average salary from the **API_EMPLOYEE** table.
+Access the **HR** database :arrow_forward: 
+
+1. Use as many aggregate functions as you can on the **Employees** table. Get creative!
 
 <details><summary>Solution 1:</summary>
 
 ```SQL
-SELECT AVG(SALARY) AS "AVERAGE SALARY" FROM API_EMPLOYEE;
+SELECT COUNT(*) as NumEmp, ROUND(AVG(SALARY)) as AvgSal, COUNT(MANAGER_ID) Minions, 
+  MAX(SALARY) as Rich, MIN(SALARY) as Poor, DEPARTMENT_ID
+FROM EMPLOYEES
+GROUP BY DEPARTMENT_ID
+HAVING COUNT(*) > 3;
 ```
 
 </details>
@@ -517,7 +577,9 @@ GROUP BY C.LAST_NAME, C.FIRST_NAME
 ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 ```
 
-**Exercise 9** :computer: 
+**Exercise 10** :computer: 
+
+Access the **API** database :arrow_forward:
 
 1. List the biggest salaries by state.
 2. List the average bonuses by title. 
@@ -608,6 +670,10 @@ ORDER BY FIRST_NAME,LAST_NAME;
 
 ### Having clause 
 
+Used after the `GROUP BY` clause, the keyword `HAVING` allows us to put filter conditions on aggregate functions. 
+
+:warning: SQL does **not** allow `WHERE` to be used with aggregate functions. 
+
 > For example, the query below refines the previous example by adding the count of the number of ordered items and only returning data for customers that have ordered over $50.
 
 ```SQL
@@ -622,8 +688,13 @@ HAVING SUM(CO.TOTAL_PRICE) >= 50
 ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 ```
 
-**Exercise 10** :computer: 
-1. List the states where the average salary is greater than $100,000. Also list the average salary amount.
+**Exercise 11** :computer: 
+1. Access the **API** database :arrow_forward: List the states where the average salary is greater than $100,000. Also list the average salary amount.
+
+Access the **HR** database :arrow_forward: 
+
+2. How many people were hired on each date? List only those dates where 2 or more people were hired.
+3. Which managers have employees who average greater than 10,000 in salary? List the names of the managers along with the average salary of their employees. 
 
 <details><summary>Solution 1:</summary>
 
@@ -632,6 +703,28 @@ SELECT STATE_CODE, AVG(SALARY)
 FROM API_EMPLOYEE
 GROUP BY STATE_CODE
 HAVING AVG(SALARY) > 100000;
+```
+
+</details>
+
+<details><summary>Solution 2:</summary>
+
+```SQL
+SELECT HIRE_DATE, COUNT(*) as Hired
+FROM EMPLOYEES
+GROUP BY HIRE_DATE
+HAVING COUNT(*) > 1;
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+SELECT M.FIRST_NAME || ' ' || M.LAST_NAME AS EMPMGR, AVG(E.SALARY) AS AVGSAL
+FROM EMPLOYEES E JOIN EMPLOYEES M ON E.MANAGER_ID = M.EMPLOYEE_ID
+GROUP BY M.FIRST_NAME || ' ' || M.LAST_NAME 
+HAVING AVG(E.SALARY) > 10000;
 ```
 
 </details>
@@ -654,3 +747,7 @@ ORDER BY I.NAME, PT.CODE ASC;
 ```
 
 :bulb: It is possible to report on multiple combinations of the columns participating in the `GROUP BY` in a single query. This is done using the `ROLLUP` keyword. It effectively does a bunch of different `GROUP BY` statements and adds the results to the query output. The extra `GROUP BY` statements correspond to the following column combinations: the first column in the group by, the first two columns in the group by, the first three columns in the group by...and so on.
+
+:muscle: **Most importantly**, remember that the order of SQL Components is as follows:
+
+![](https://i.imgur.com/ohqFmHd.png)
