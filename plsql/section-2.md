@@ -147,6 +147,8 @@ BEGIN
 END printItemInfo;
 ```
 
+:book: [Read more](https://docs.oracle.com/cd/B28359_01/appdev.111/b28843/tdddg_procedures.htm) about stored procedures.
+
 ## Exercises :computer: 
 
 One last thing before we jump into exercises - **Oracle Dual Table**.
