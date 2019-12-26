@@ -84,10 +84,6 @@ It is possible to have a varying window size per row based on the output of a fu
 
 :book: [Read more](http://docs.oracle.com/cd/E11882_01/server.112/e41084/functions004.htm#SQLRF06174) about analytic functions. 
 
-**Exercise** :computer: 
-
-Implementing analytic functions
-
 ## Oracle Metadata
 
 Oracle contains vast amounts of metadata. In fact, if you can think of it, Oracle is probably tracking it. The number of views and tables is very large, and only a very seasoned DBA would be expected to know what most of them even do. These tables and views are most often used for advanced troubleshooting and scripting. Even administration tools such as OEM use these tables and views behind the covers (OEM will actually show you the SQL it is using to pull the data).
