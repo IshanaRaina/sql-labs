@@ -32,6 +32,8 @@ CALL hello_world_pkg.printMessage('Hello World!');
 
 :bulb: Note that the package name is added before the procedure name. Without this Oracle will not be able to identify the package.
 
+:book: [Read more](https://docs.oracle.com/cd/B19306_01/appdev.102/b14261/packages.htm) about packages.
+
 ## Compilation Dependencies
 The package can be compiled directly from the GUI (right-click and compile) or via the command line. 
 - In the SQLDeveloper GUI, an invalid object shows up as :x: (a red cross)
