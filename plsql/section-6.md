@@ -52,6 +52,8 @@ BEGIN
 END;
 ```
 
+:book: [Read more](https://docs.oracle.com/database/121/TDDDG/tdddg_triggers.htm#TDDDG50000) about triggers. 
+
 ## Exercises :computer: 
 
 This exercise entails creating a trigger for the purpose of auditing salary changes. 
