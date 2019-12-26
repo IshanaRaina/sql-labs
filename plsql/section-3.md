@@ -1,8 +1,6 @@
 # Section 3 
 
-## Packages and Debugging
-
-### Packages
+## Packages
 A package is a mechanism to help organize functions and procedures. They consist of two parts:
 - a specification (think interface)
 - a body (think implementation)
@@ -34,7 +32,7 @@ CALL hello_world_pkg.printMessage('Hello World!');
 
 :bulb: Note that the package name is added before the procedure name. Without this Oracle will not be able to identify the package.
 
-### Compilation Dependencies
+## Compilation Dependencies
 The package can be compiled directly from the GUI (right-click and compile) or via the command line. 
 - In the SQLDeveloper GUI, an invalid object shows up as :x: (a red cross)
 - In the dictionary query results, it will show up as having a status of INVALID. 
@@ -46,5 +44,3 @@ SELECT *
 FROM USER_OBJECTS WHERE OBJECT_TYPE 
 IN ('FUNCTION','PROCEDURE','PACKAGE') AND STATUS <> 'VALID';
 ```
-
-### Debugging :question: 
