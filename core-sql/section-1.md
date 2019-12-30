@@ -456,3 +456,143 @@ The query above contains two subqueries:
 - The second subquery is just a top-N query on that. The paginated query is a simple additional restriction to discard the leading portions that we are not interested in.
 
 </details>
+
+## More Exercises :computer: 
+
+1. Create 2 tables as follows:
+
+Table Name: **Training_Track**
+
+Column Name | Datatype | Constraints
+--- | --- | ---
+Track_ID | Number(5) | Not Null, Primary Key
+Track_Name | Varchar(50) | Not Null
+Track_Hours | Number(3) | 
+Start_Date | Date | 
+End_Date | Date |
+
+Table Name: **Training_Students**
+
+Column Name | Datatype | Constraints
+--- | --- | ---
+CorpID | Varchar(7) | Not Null, Primary Key
+FirstName | Varchar(50) | 
+LastName | Varchar(50) |
+Track_ID | Number(5) | Foreign Key that references **Training_Track**(Track_ID)
+
+Access the **API** database :arrow_forward: 
+
+2. Select all columns from **API_CUSTOMER** having the following conditions:
+    a. Last name falls between 'A' and 'Jz', both inclusive.
+    b. First name is either 'John' or 'Lisa'.
+    c. Limit the results to the first 2 rows. 
+    
+3. Insert a new record into **API_CUSTOMER** with the following values:
+
+CUSTOMER_ID | FIRST_NAME | LAST_NAME | EMAIL | CREATED_TIMESTAMP
+--- | --- | ---- | --- | ---
+5 | Erick | Polsky | E@Polsky.org | SYSDATE
+
+4. Update **API_CUSTOMER** and add `MIDDLE_INITIAL` as 'J' to Erick Polsky's record. 
+
+5. Delete Erick Polsky's record from **API_CUSTOMER**.
+
+<details><summary>Solution 1:</summary>
+
+Creating table **Training_Track**:
+
+```SQL
+CREATE TABLE Training_Track
+	(Track_ID NUMBER(5) NOT NULL PRIMARY KEY
+	,Track_Name VARCHAR2(50) NOT NULL
+	,Track_Hours NUMBER(3)
+	,Start_Date DATE
+	,End_Date DATE
+	);
+```
+
+Creating table **Training_Students**:
+```SQL
+CREATE TABLE Training_Students
+	(CorpID VARCHAR2(7) NOT NULL PRIMARY KEY
+	,FirstName VARCHAR2(50)
+	,LastName VARCHAR2(50)
+	,Track_ID NUMBER(5)
+	,CONSTRAINT FK_STUDENT_TRACK_ID FOREIGN KEY (Track_ID) 
+		 REFERENCES Training_Track(Track_ID)
+	);
+```
+
+</details>
+
+<details><summary>Solution 2a:</summary>
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE LAST_NAME >= 'A' AND LAST_NAME <= 'Jz';
+```
+
+</details>
+
+<details><summary>Alternative Solution 2a:</summary>
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE LAST_NAME BETWEEN 'A' AND 'Jz';
+```
+
+</details>
+
+<details><summary>Solution 2b:</summary>
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE FIRST_NAME = 'John' OR FIRST_NAME = 'Lisa';
+```
+
+</details>
+
+<details><summary>Alternative Solution 2b:</summary>
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE FIRST_NAME IN ('John','Lisa');
+```
+
+</details>
+
+<details><summary>Solution 2c:</summary>
+
+```SQL
+SELECT * FROM API_CUSTOMER
+WHERE ROWNUM < 3;
+```
+
+</details>
+
+<details><summary>Solution 3:</summary>
+
+```SQL
+INSERT INTO API_CUSTOMER
+(CUSTOMER_ID,FIRST_NAME,LAST_NAME,EMAIL,CREATED_TIMESTAMP)
+VALUES(5,'Erick','Polsky','E@Polsky.org',SYSDATE);
+```
+
+</details>
+
+<details><summary>Solution 4:</summary>
+
+```SQL
+UPDATE API_CUSTOMER SET MIDDLE_INITIAL = 'J'
+WHERE CUSTOMER_ID = 5;
+```
+
+</details>
+
+<details><summary>Solution 5:</summary>
+
+```SQL
+DELETE FROM API_CUSTOMER WHERE CUSTOMER_ID = 5;
+```
+
+</details>
