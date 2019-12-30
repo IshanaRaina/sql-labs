@@ -180,13 +180,14 @@ FROM dual
 1. Remember the dating ability exercise you'd solved based on employees' salary? Let's build on that using a function. Use employee ID as your parameter and return the dating advice. Check your function against `<function_name>(101)`, `<function_name>(103)` and `<function_name>(106)`. Remeber to use the dual table. 
 2. Create a function that takes salary as the parameter and returns the dating advice. Check your function against `<function_name>(15000)`, `<function_name>(7000)` and `<function_name>(5)`.
 3. Create a test that uses the function created in step 2 and shows all employees with the advice.
-4.  Discuss what the biggest advantage of using salary instead of employee ID as the parameter is?  What is the disadvantage? 
+    - Discuss what the biggest advantage of using salary instead of employee ID as the parameter is?  What is the disadvantage? 
 5. Create a function that takes employee ID as the parameter and returns the region name. Check your function against `<function_name>(101)`.
 6. Create a function that takes department ID as the parameter and returns the corresponding department name. Check your function against `<function_name>(90)`. Also, run the function against all department IDs.
 7. Repeat exercise step 6 but with a procedure. Check your procedure against `<procedure_name>(90)`.
 8. Food for thought - let's use the function to make the above procedure simpler.
 9. Create a procedure that takes employee ID and NewSalary as parameters. The procedure should update the salary to the new number. :bell: NewSalary should always be higher than the current salary.
-10. Create a function that returns a table of employees earning greater than 15,000.
+10. Create a procedure called `ADD_REGION` that adds a region to the **REGIONS** table. Also use error handling on duplicate values. 
+11. Create a procedure called `NUKE_REGION` that removes a region based on its ID. Check to see if the region doesn't exist and inform the user that nothing was deleted. 
 
 <details><summary>Solution 1:</summary>
 
@@ -288,7 +289,7 @@ FROM employees;
 
 </details>
 
-<details><summary>Solution 5:</summary>
+<details><summary>Solution 4:</summary>
 
 ```SQL
 CREATE OR REPLACE FUNCTION Emp_Region (id number) 
@@ -307,7 +308,7 @@ FROM dual;
 
 </details>
 
-<details><summary>Solution 6:</summary>
+<details><summary>Solution 5:</summary>
 
 ```SQL
 CREATE OR REPLACE FUNCTION get_dept ( id number ) 
@@ -335,7 +336,7 @@ FROM employees;
 
 </details>
 
-<details><summary>Solution 7:</summary>
+<details><summary>Solution 6:</summary>
 
 ```SQL
 CREATE OR REPLACE PROCEDURE get_dept_proc ( id number ) 
@@ -358,7 +359,7 @@ EXECUTE get_dept_proc(90);
 
 </details>
 
-<details><summary>Solution 8:</summary>
+<details><summary>Solution 7:</summary>
 
 ```SQL
 CREATE OR REPLACE PROCEDURE get_dept_proc2 ( id number ) 
@@ -377,7 +378,7 @@ EXECUTE get_dept_proc2(90);
 
 </details>
 
-<details><summary>Solution 9:</summary>
+<details><summary>Solution 8:</summary>
 
 ```SQL
 CREATE PROCEDURE set_salary (id number, NewSalary number)
@@ -404,32 +405,60 @@ WHERE employee_id = 100;
 
 </details>
 
-<details><summary>Solution 10:</summary>
+<details><summary>Solution 9:</summary>
 
 ```SQL
---1) Create the row definition
-CREATE TYPE TOP_SAL AS OBJECT (ID NUMBER, FIRST VARCHAR2(50), LAST VARCHAR2(50), 
-  SALARY NUMBER);
-
---2) Create a table of TOP_SAL rows
-CREATE TYPE TOP_SAL_TBL AS TABLE OF TOP_SAL;
-
---3) Create a FN that returns TOP_SAL_TBL
-CREATE OR REPLACE FUNCTION TOP_SAL_FN (SAL NUMBER)
-  RETURN TOP_SAL_TBL
-AS
-  ERICK_TBL TOP_SAL_TBL;
+CREATE OR REPLACE  PROCEDURE ADD_REGION(id NUMBER, name VARCHAR2) AS 
 BEGIN
-  SELECT TOP_SAL(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY)
-  BULK COLLECT INTO ERICK_TBL
-  FROM EMPLOYEES WHERE SALARY > SAL;
-  RETURN ERICK_TBL;
+  INSERT INTO regions (region_id, region_name) VALUES (id, name);
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE(name || ' added');
+EXCEPTION
+  WHEN DUP_VAL_ON_INDEX THEN     
+    DBMS_OUTPUT.PUT_LINE('Region ID already exists');
+  WHEN OTHERS THEN  
+    DBMS_OUTPUT.PUT_LINE('Something bad happened');
+    ROLLBACK;
 END;
 ```
 
-Checking the function:
+Executing the procedure:
 ```SQL
-SELECT * FROM TABLE(TOP_SAL_FN(17000));
+EXECUTE ADD_REGION(666,'EVIL PLACE');
+```
+
+Checking the procedure:
+```SQL
+SELECT * FROM regions;
+```
+
+</details>
+
+<details><summary>Solution 10:</summary>
+
+```SQL
+CREATE OR REPLACE  PROCEDURE NUKE_REGION(id NUMBER) AS 
+  howMany number;
+BEGIN
+  --see if any exist
+  select count(*) into howMany from regions where region_id = id;
+  --if not, let them know
+  IF howMany = 0 THEN DBMS_OUTPUT.PUT_LINE('Nothing to delete');
+  ELSE DELETE FROM regions WHERE region_id=id;
+     --commit'
+     DBMS_OUTPUT.PUT_LINE(id || ' deleted');
+  END IF;
+END;
+```
+
+Executing the procedure:
+```SQL
+EXECUTE NUKE_REGION(666);
+```
+
+Checking the procedure:
+```SQL
+SELECT * FROM regions;
 ```
 
 </details>
