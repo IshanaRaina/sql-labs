@@ -54,6 +54,9 @@ A column represents a piece of information in a table. It has both a name to ide
 
 :bulb: A relational database usually consists of multiple tables. Together these tables comprise the **database model.** Note that there are many ways to represent the same set of data (using tables and columns). A database model is just one particular choice in terms of how to represent the data.
 
+:warning: **Before we write our very first SQL query, something to note:**
+If you are familiar with programming languages, you might not be used to typing commands in UPPERCASE. But get used to it with SQL. The uppercase words ARE GOING TO JUMP AT YOU! The claim here is to improve readability. Most databases accept both lower as well as upper case letters whereas some databases are configured to be case-sensitive. 
+
 **Exercise 1** :computer:
 
 Let's look at a `CREATE` statement. As the name suggests, it is used to create tables in the database. When creating a table you must specify the table name, the columns that make up the table and their data types. Apart from these 3, there are many more options available, some of which we will go over later in the course. 
@@ -104,7 +107,7 @@ The column in the child table that references the primary key in the parent tabl
 
 > For example,
 > - The data in the table API_CUSTOMER_ORDER is related to the data in API_CUSTOMER (the orders belonging to a particular customer). 
-> - The column `CUSTOMER_ID` is the primary key :key: of API_CUSTOMER. The table API_CUSTOMER_ORDER keeps a reference to API_CUSTOMER in the column `CUSTOMER_ID`. 
+> - The column `CUSTOMER_ID` is the primary key of API_CUSTOMER. The table API_CUSTOMER_ORDER keeps a reference to API_CUSTOMER in the column `CUSTOMER_ID`. 
 > - This makes API_CUSTOMER the parent table and API_CUSTOMER_ORDER the child table.
 
 **Exercise 3** :computer: 
@@ -454,6 +457,43 @@ WHERE RNUM >= 4;
 The query above contains two subqueries:
 - The innermost subquery selects all of the rows from **API_CUSTOMER_ORDER_ITEM** and orders them. 
 - The second subquery is just a top-N query on that. The paginated query is a simple additional restriction to discard the leading portions that we are not interested in.
+
+</details>
+
+### Case Statement
+
+The CASE statement goes through conditions as soon as the first condition is met, its corresponding value is returned without reading the rest of the statement. 
+- If no conditions are true, the value in the ELSE clause is returned.
+- If no conditions are true and there is no ELSE clause, it returns NULL.
+
+> For example, categorize customers based on their IDs.
+
+```SQL
+SELECT CASE
+    WHEN CUSTOMER_ID = 1 THEN 'AWESOME'
+    WHEN CUSTOMER_ID = 2 THEN 'JERK'
+    ELSE 'MEH'
+  END CASE
+from API_CUSTOMER_ORDER;
+```
+
+**Exercise 11** :computer: 
+
+Write a 'Greeting' case statement. 
+- If the `NAME` from **API_ITEM** has 'CAT' in it, return 'Meow' as the greeting.
+- If the `NAME` from **API_ITEM** has 'DOG' in it, return 'Woof' as the greeting.
+- Else, return 'Namaste' as the greeting. 
+
+<details><summary>Solution:</summary>
+
+```SQL
+SELECT NAME, CASE
+  WHEN UPPER(NAME) LIKE '%CAT%' THEN 'Meow'
+  WHEN UPPER(NAME) LIKE '%DOG%' THEN 'Woof'
+  ELSE 'Namaste'
+END AS "Greeting"
+FROM API_ITEM;
+```
 
 </details>
 
