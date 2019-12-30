@@ -483,9 +483,9 @@ Track_ID | Number(5) | Foreign Key that references **Training_Track**(Track_ID)
 Access the **API** database :arrow_forward: 
 
 2. Select all columns from **API_CUSTOMER** having the following conditions:
-    a. Last name falls between 'A' and 'Jz', both inclusive.
-    b. First name is either 'John' or 'Lisa'.
-    c. Limit the results to the first 2 rows. 
+	- Last name falls between 'A' and 'Jz', both inclusive.
+	- First name is either 'John' or 'Lisa'.
+	- Limit the results to the first 2 rows. 
     
 3. Insert a new record into **API_CUSTOMER** with the following values:
 
