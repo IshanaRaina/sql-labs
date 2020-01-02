@@ -56,13 +56,13 @@ An inner join is one in which values from the two columns must exist and satisfy
 
 **Exercise 1** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 
 1. List the employee first and last names along with their job titles.
 2. List the employee first and last names along with their job titles for all employees whose last name is 'King'.
 3. List employee names, jobs, salary and max_salary only if those employees earn the max_salary or more.
 4. List department name, first and last name and job titles using the alternative join method that you saw above.
-5. Access the **API** database :arrow_forward: List the orders from largest to smallest and also show the first and last name of the customer who placed that order. 
+5. Access the **Pet Store** database :arrow_forward: List the orders from largest to smallest and also show the first and last name of the customer who placed that order. 
 
 <details><summary>Solution 1:</summary>
 
@@ -140,13 +140,13 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 2** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 1. List departments which have no employees. 
 2. List employees that don't belong to any department.
 3. List employees that don't belong to any department without using a join. :wink: 
 4. List the department name, first and last name and job titles of those employees whose first name is `NULL`. Replace the `NULL` first names with 'Harvey' in the result.
 5. List departments along with their manager's full names. 
-6. Access the **API** database :arrow_forward: List all items that have never been ordered. 
+6. Access the **Pet Store** database :arrow_forward: List all items that have never been ordered. 
 
 <details><summary>Solution 1:</summary>
 
@@ -225,7 +225,7 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 3** :computer: 
 
-Access the **API** database :arrow_forward: Who let the dogs :dog2: out?! Oops, I meant, who bought the dog food'?! List the item name (ie 'API Dog Food') and customer name.
+Access the **Pet Store** database :arrow_forward: Who let the dogs :dog2: out?! Oops, I meant, who bought the dog food'?! List the item name (ie 'API Dog Food') and customer name.
 
 <details><summary>Solution:</summary>
 
@@ -257,7 +257,7 @@ ON I.PACKAGE_TYPE_ID = PT.PACKAGE_TYPE_ID;
 
 **Exercise 4** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 1. List all employee first and last names along with all their corresponding department names and order the results in descending order of department.
 2. List all employees first and last names along with all their corresponding job titles where job title is `NULL`.
 
@@ -287,7 +287,7 @@ As the name suggests, a self join is a join in which a given table is joined wit
 
 **Exercise 5** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 1. List names of all managers and their employees, ordered by manager.
 2. Let's take it one step further - list employee's full name, the department they belong to followed by their manager's full name.
 3. Let's take it another step further! List employee's full name, employee's manager name, department name and the department manager's name.
@@ -345,7 +345,7 @@ WHERE LAST_NAME = 'Doe';
 
 **Exercise 6** :computer: 
 
-Access the **HR** database :arrow_forward: List all salaries (ie employee salary, min salary and max salary) in a single column.
+Access the **Human Resources** database :arrow_forward: List all salaries (ie employee salary, min salary and max salary) in a single column.
 
 <details><summary>Solution:</summary>
 
@@ -373,8 +373,8 @@ WHERE LAST_NAME = 'Doe';
 
 **Exercise 7** :computer: 
 
-1. Access the **HR** database :arrow_forward: List the names of all employees followed by the names of all countries in a single column.
-2. Access the **API** database :arrow_forward: List first names of all customers whose last name is 'Johnson' and the last names of all customers whose last name is not 'Johnson', in a single column.
+1. Access the **Human Resources** database :arrow_forward: List the names of all employees followed by the names of all countries in a single column.
+2. Access the **Pet Store** database :arrow_forward: List first names of all customers whose last name is 'Johnson' and the last names of all customers whose last name is not 'Johnson', in a single column.
 
 <details><summary>Solution 1:</summary>
 
@@ -506,7 +506,7 @@ DISTINCTROW, on the other hand, checks all fields in the table that are being qu
 
 **Exercise 8** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 
 1. List the department names and the number of distinct managers in that department. 
 
@@ -543,7 +543,7 @@ SELECT MAX(SALARY) AS "BIGGEST SALARY" FROM API_EMPLOYEE;
 
 **Exercise 9** :computer: 
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 
 1. Use as many aggregate functions as you can on the **Employees** table. Get creative!
 
@@ -582,7 +582,7 @@ ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 
 **Exercise 10** :computer: 
 
-Access the **API** database :arrow_forward:
+Access the **Pet Store** database :arrow_forward:
 
 1. List the biggest salaries by state.
 2. List the average bonuses by title. 
@@ -694,9 +694,9 @@ ORDER BY C.LAST_NAME ASC, C.FIRST_NAME ASC;
 :book: [Read more](https://docs.oracle.com/javadb/10.8.3.0/ref/rrefsqlj14854.html) about `HAVING`.
 
 **Exercise 11** :computer: 
-1. Access the **API** database :arrow_forward: List the states where the average salary is greater than $100,000. Also list the average salary amount.
+1. Access the **Pet Store** database :arrow_forward: List the states where the average salary is greater than $100,000. Also list the average salary amount.
 
-Access the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 
 2. How many people were hired on each date? List only those dates where 2 or more people were hired.
 3. Which managers have employees who average greater than 10,000 in salary? List the names of the managers along with the average salary of their employees. 
