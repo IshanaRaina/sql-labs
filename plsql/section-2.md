@@ -177,7 +177,7 @@ FROM dual
 
 :bulb: The reason this is important for the following exercises is: Oracle treats the use of DUAL the same as calling a function which simply evaluates the expression used in the `SELECT` statement.
 
-:alarm_clock: Access the **HR** database for the following exercises. 
+:alarm_clock: Access the **Human Resources** database for the following exercises. 
 
 1. Remember the dating ability exercise you'd solved based on employees' salary? Let's build on that using a function. Use employee ID as your parameter and return the dating advice. Check your function against `<function_name>(101)`, `<function_name>(103)` and `<function_name>(106)`. Remeber to use the dual table. 
 2. Create a function that takes salary as the parameter and returns the dating advice. Check your function against `<function_name>(15000)`, `<function_name>(7000)` and `<function_name>(5)`.
