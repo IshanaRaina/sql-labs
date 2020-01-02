@@ -51,7 +51,7 @@ The parameters passed into functions and procedures can be `IN`, `OUT`, or `IN O
 :warning: There are restrictions when using `OUT` or `IN OUT` parameters in functions, the most notable of which is that such functions cannot be called from SQL. In general, when multiple outputs are desired, the recommendation is to use a procedure or to create a custom type (this will be covered in a subsequent module).
 
 
-> A prcedure with in and out parameters
+> A procedure with in and out parameters:
 
 ```SQL
 CREATE OR REPLACE PROCEDURE innerProc(inParam in varchar2, inOutParam in out varchar2, 
@@ -101,6 +101,8 @@ BEGIN
   DBMS_OUTPUT.put_line('After innerProc inParam: ' || inParam);
   DBMS_OUTPUT.put_line('After innerProc inOutParam: ' || inOutParam);
   DBMS_OUTPUT.put_line('After innerProc outParam: ' || outParam);
+  
+END outerProc;
 ```
 
 ### Passing Data Around
