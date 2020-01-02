@@ -45,7 +45,7 @@ END;
 ```
 
 ### Integration with SQL
-Moving on from 'Hello World!', let's turn our attention back to our online pet store API. 
+Moving on from 'Hello World!', let's turn our attention back to our pet store. 
 
 One of the most powerful features of PL/SQL is its integration with SQL. To invoke an SQL statement just include it inside the PL/SQL block.
 
@@ -232,7 +232,7 @@ Do you :eyes: the results now?
 
 ## Exercises :computer: 
 
-Create views for the following in the **HR** database. Don't forget to `SELECT * FROM <view_name>` to see your results!
+Create views for the following in the **Human Resources** database. Don't forget to `SELECT * FROM <view_name>` to see your results!
 1. Add a middle initial 'J' to all employee names and concatenate into a column called `Full_Name`.
 2. Show all first name duplicates among employees. 
 3. Grab all unique first names from employees and all departments into a single list of names.
