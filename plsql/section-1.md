@@ -45,7 +45,7 @@ END;
 ```
 
 ### Integration with SQL
-Moving on from 'Hello World!', let's turn our attention back to our pet store. 
+Moving on from 'Hello World!', let's turn our attention back to the **Pet Store** database. 
 
 One of the most powerful features of PL/SQL is its integration with SQL. To invoke an SQL statement just include it inside the PL/SQL block.
 
