@@ -56,7 +56,7 @@ END;
 
 ## Exercises :computer: 
 
-This exercise entails creating a trigger for the purpose of auditing salary changes. 
+This exercise entails creating a trigger in the **Human Resources** for the purpose of auditing salary changes. 
 
 1. Create a table to store the audit data - we are interested in who made the change, when they made the change, old salary, new salary and employee ID of the person whose salary was changed. 
 2. Next, create a trigger that fires whenever an employee's salary gets updated. 
