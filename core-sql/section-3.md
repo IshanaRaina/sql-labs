@@ -187,7 +187,7 @@ For troubleshooting purposes, if that returned what was expected, we would know 
 
 **Exercises** :computer: 
 
-Acess the **HR** database :arrow_forward: 
+Access the **Human Resources** database :arrow_forward: 
 
 1. List out all employee details on the employee who earns the least salary.
 2. Building on the last query, who is the manager whose employee earns the least salary?
