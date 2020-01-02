@@ -7,38 +7,21 @@ In case you're wondering about what a relational database is, it is any database
 
 With that primer, let's get straight to it! :smile: 
 
-For this course we will be using a fictitious **online pet store called API**.
-
-:bell: A few pointers:
-- There are scripts to drop and re-create the database tables and other objects. This gives us the freedom to make any changes we want in the exercises and then be able to return to the standard setup with ease. 
-    - The script **create_schema.sql** will drop and re-create all of the relevant objects and data.
-- All tables start with the term `API`.
-- Column names have been given meaningful names and their purpose should be fairly clear.
-- Primary keys are typically the table name (minus API) with an `_id` added at the end.
-- Foreign keys are named after the referenced primary key when possible. 
-    - When that would result in confusion (E.g. multiple references to the same table) we give it a reasonable name and then add an `_id` at the end.
-- All tables have three standard audit columns on them:
-    - `CREATED_TIMESTAMP`
-    - `MODIFIED_TIMESTAMP`
-    - `MODIFIED_BY`
-
-Confused?! :anguished: Don't you worry, all of these terms will be explained next.
-
 ### Relations/Tables
 
 In a relational database, the object in which we store data is called a table. A table is identified by its name and is comprised of one or more columns that specify the structure of the data in that table.
 
-> Listed below are a few of the tables that our database consists of. There are other tables and objects in the schema but they will be introduced in specific exercises. The tables below form the core schema.
+> Listed below are a few of the tables that our **Pet Store database** consists of. There are other tables and objects in the schema but they will be introduced in specific exercises. The tables below form the core schema.
 
 Table | Description
 --- | ---
-API_CUSTOMER | This table represents a customer. Someone that created an account with API and that can order things.
-API_ADDRESS | This table represents a customer. Someone that created an account with API and that can order things.
-API_PACKAGE_TYPE | This table contains the different kinds of packaging :package: associated with the products that API offers such as `Each`, `Pallet`, `Box` and `Barrel`.  Note that a given product can be offered in many different package types and that some package types may be comprised of smaller package types. For example, you can purchase a single package (that would be an `Each` package type) or a `Box` package type (a `Box` package type contains 24 `Each` package type).
-API_ITEM | This table represents items that API has (or has had) for sale.
+API_CUSTOMER | This table represents a customer. Someone that created an account with Pet Store and that can order things.
+API_ADDRESS | This table represents an address that a customer has used.
+API_PACKAGE_TYPE | This table contains the different kinds of packaging :package: associated with the products that Pet Store offers such as `Each`, `Pallet`, `Box` and `Barrel`.  Note that a given product can be offered in many different package types and that some package types may be comprised of smaller package types. For example, you can purchase a single package (that would be an `Each` package type) or a `Box` package type (a `Box` package type contains 24 `Each` package type).
+API_ITEM | This table represents items that Pet Store has (or has had) for sale.
 API_CUSTOMER_ORDER | This table represents a customer order.
 API_CUSTOMER_ORDER_ITEM | This table details the items that made up a customer order.
-API_EMPLOYEE | This table contains the list of API employees and information on each employee.
+API_EMPLOYEE | This table contains the list of Pet Store employees and information on each employee.
 
 ### Rows
 A row represents an instance of the data element that the table stores. A table can have any number of rows in it.
@@ -74,7 +57,7 @@ CREATE TABLE API_PACKAGE_TYPE (
 
 :book: [Read more](https://www.techonthenet.com/oracle/tables/create_table.php) about `CREATE TABLE`.
 
-Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file found in the :file_folder: utils folder. While we have not covered many of the options yet, this should give you a good idea of the syntax for creating a table.
+Spend a few minutes looking at the `CREATE TABLE` statements in the  **create_schema.sql** file. While we have not covered many of the options yet, this should give you a good idea of the syntax for creating a table.
 
 ### DDL vs DML
 
@@ -89,9 +72,9 @@ Examples: CREATE, ALTER, DROP | Examples: SELECT, INSERT, UPDATE, DELETE
 
 **Exercise 2** :computer:
 
-The distinction between DDL and DML has been purposely created and the reason for that is access privileges. Imagine being the database administrator for this online pet store. 
+The distinction between DDL and DML has been purposely created and the reason for that is access privileges. Imagine being the database administrator for Pet Store. 
 - Now consider the case of Alice - an analyst in your company. Would you be okay granting Alice the permissions to alter the database schema or accidentally delete a table or two? Think about her job responsibilities. She needs permissions to read the data in the tables so that she can create reports and perform her analysis. And it might also be beneficial to grant her permission to insert, update and delete the data. This is because analysts uncover a lot of errors with data during the data cleaning process such as duplicates, inconsistencies etc. Mind you, the important term here being **access to data** and not the database structure itself.
-- Next, consider Bob - an end user who is sitting in his mom's garage one day, and decides he wants to buy a cat. :cat: Obviously, he's going to need food to feed the cat so he settles on using API's API :joy: (what I mean is, the online pet store's Application Programming Interface) to place an order for Cat Food. What permissions should end users like Bob be granted?
+- Next, consider Bob - an end user who is sitting in his mom's garage one day, and decides he wants to buy a cat. :cat: Obviously, he's going to need food to feed the cat so he settles on ordering Cat Food from Pet Store. What permissions should end users like Bob be granted?
 
  ### Primary Keys and References
 
@@ -520,7 +503,7 @@ FirstName | Varchar(50) |
 LastName | Varchar(50) |
 Track_ID | Number(5) | Foreign Key that references **Training_Track**(Track_ID)
 
-Access the **API** database :arrow_forward: 
+Access the **Pet Store** database :arrow_forward: 
 
 2. Select all columns from **API_CUSTOMER** having the following conditions:
 	- Last name falls between 'A' and 'Jz', both inclusive.
