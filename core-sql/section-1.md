@@ -7,7 +7,7 @@ In case you're wondering about what a relational database is, it is any database
 
 With that primer, let's get straight to it! :smile: 
 
-### Relations/Tables
+### Relations or Tables
 
 In a relational database, the object in which we store data is called a table. A table is identified by its name and is comprised of one or more columns that specify the structure of the data in that table.
 
@@ -219,7 +219,7 @@ SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER;
 **Exercise 6** :computer: 
 
 Go ahead and try it! 
-Write `SELECT` queries against tables from our core schema that you were introduced to in [Relations/Tables](section-1.md#Relations\/Tables). 
+Write `SELECT` queries against tables from our core schema that you were introduced to in [Relations/Tables](section-1.md#Relations-or-Tables). 
 
 ### Aliases
 
