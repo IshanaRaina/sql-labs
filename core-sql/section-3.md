@@ -98,13 +98,13 @@ If there is a problem with the query, you can start with the simplest subquery, 
 
 > For example, create a copy of the query and start selecting only subquery 1.
 
-```
+```SQL
 WITH subquery1Alias as (subquery 1 SQL)
 select * from  subquery1Alias;
 ``` 
 > If that works, expand to include subquery 2.
 
-```
+```SQL
 WITH subquery1Alias as (subquery 1 SQL),
 subquery2Alias as (subquery 2 SQL)
 select * from subquery2Alias;
