@@ -219,7 +219,7 @@ SELECT FIRST_NAME, LAST_NAME FROM API_CUSTOMER;
 **Exercise 6** :computer: 
 
 Go ahead and try it! 
-Write `SELECT` queries against tables from our core schema that you were introduced to in [Relations/Tables](section-1.md#Relations-Tables). 
+Write `SELECT` queries against tables from our core schema that you were introduced to in [Relations/Tables](section-1.md#Relations\/Tables). 
 
 ### Aliases
 
