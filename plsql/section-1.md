@@ -129,26 +129,6 @@ EXCEPTION
 END;
 ```
 
-> Catch and re-raise a custom error.
-
-```SQL
-DECLARE
-  custom_error EXCEPTION;
-  sMessage varchar2(255); 
-BEGIN
-  sMessage := 'Ran after the error!';
-  RAISE custom_error;
-  DBMS_OUTPUT.PUT_LINE(sMessage);
-EXCEPTION
-  WHEN custom_error THEN
-    DBMS_OUTPUT.PUT_LINE('Caught the custom error');
-    DBMS_OUTPUT.PUT_LINE(SQLERRM);
-    RAISE;
-  WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE(SQLERRM);
-END;
-```
-
 ## Views
 A view is a named query that can be used as a virtual table in SQL (including in other views). The view can then be used in SQL queries and also in other views as if it were a table.
 
