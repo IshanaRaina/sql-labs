@@ -150,7 +150,7 @@ ALTER TABLE API_CUSTOMER
 ADD (PHONE VARCHAR2(30));
 ```
 
-:book: [Read more](https://docs.oracle.com/cd/E17952_01/refman-5.1-en/alter-table.html) about `ALTER TABLE`.
+:book: [Read more](https://docs.oracle.com/cd/B19306_01/server.102/b14200/statements_3001.htm) about `ALTER TABLE`.
 
 ### Drop
 Dropping a table not only means deleting its data but also its underlying structure. In essence, it removes the table from the database including all rows, indexes and privileges.
