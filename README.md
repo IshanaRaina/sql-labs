@@ -8,9 +8,9 @@ Data is everywhere! And SQL (or a flavor of SQL) is the language used to interac
 
 ## Let's Get Started
 
-The course is divided into 2 parts: 
-
 ### Core SQL
+
+This module deals with the core concepts of SQL. Its goal is to get you familiar enough with the language to where you're comfortable interacting with any structured database and can query it to retrieve meaningful information.
 
 - [Section 1](core-sql/section-1.md): Introduction to basic SQL Concepts, Basic SQL queries
 - [Section 2](core-sql/section-2.md): Joins, Set operations, Unique values, Aggregate functions, Group by, Having
@@ -19,6 +19,8 @@ The course is divided into 2 parts:
 - [Section 5](core-sql/section-5.md): Oracle metadata
 
 ### PL/SQL
+
+Want to take your SQL skills to the next level? Add procedural elements to your queries! The PL in PL/SQL stands for **P**rocedural **L**anguage and is the procedural extension of SQL supported by the Oracle database management system. 
 
 - [Section 1](plsql/section-1.md): Introduction to PL/SQL, Views
 - [Section 2](plsql/section-2.md): Functions, Stored procedures
@@ -29,4 +31,4 @@ The course is divided into 2 parts:
 
 ## Can't Get Enough?
 
-There's been a murder! :speak_no_evil: Put your Sherlock Holmes hat on and head [here](https://mystery.knightlab.com/) to solve the murder mystery! You won't need Watson as long as you take your SQL skills along!
+There's been a murder! :speak_no_evil: Put on your Sherlock Holmes hat and head [here](https://mystery.knightlab.com/) to solve the murder mystery! You won't need Watson as long as you take your SQL skills along!
