@@ -26,7 +26,7 @@ Want to take your SQL skills to the next level? Add procedural elements to your 
 - [Section 2](plsql/section-2.md): Functions, Stored procedures
 - [Section 3](plsql/section-3.md): Packages, Compilation Dependencies
 - [Section 4](plsql/section-4.md): Looping, Cursors
-- [Section 5](plsql/section-5.md): Dynamic SQL, Transactions, Custom types
+- [Section 5](plsql/section-5.md): Dynamic SQL, Transactions, Custom datatypes
 - [Section 6](plsql/section-6.md): Triggers
 
 ## Can't Get Enough?
