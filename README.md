@@ -20,7 +20,7 @@ This module deals with the core concepts of SQL. Its goal is to get you familiar
 
 ### PL/SQL
 
-Want to take your SQL skills to the next level? Add procedural elements to your queries! The PL in PL/SQL stands for **P**rocedural **L**anguage and is the procedural extension of SQL supported by the Oracle database management system. 
+Want to take your SQL skills to the next level? :rocket: Add procedural elements to your queries! The PL in PL/SQL stands for **P**rocedural **L**anguage and is the procedural extension of SQL supported by the Oracle database management system. 
 
 - [Section 1](plsql/section-1.md): Introduction to PL/SQL, Views
 - [Section 2](plsql/section-2.md): Functions, Stored procedures
