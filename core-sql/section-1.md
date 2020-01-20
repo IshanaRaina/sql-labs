@@ -40,6 +40,14 @@ A column represents a piece of information in a table. It has both a name to ide
 :warning: **Before we write our very first SQL query, something to note:**
 If you are familiar with programming languages, you might not be used to typing commands in UPPERCASE. But get used to it with SQL. The uppercase words ARE GOING TO JUMP AT YOU! The claim here is to improve readability. Most databases accept both lower as well as upper case letters whereas some databases are configured to be case-sensitive. 
 
+:eyes: Following are the databases that you will be using throughout your SQL journey and their corresponding usernames and passwords:
+
+Database Name | Username | Password
+--- | --- | ---
+Adventure Works | AdvWorks | welcome2
+Human Resources | hr | welcome2
+Pet Store | petstore | welcome2
+
 **Exercise 1** :computer:
 
 Let's look at a `CREATE` statement. As the name suggests, it is used to create tables in the database. When creating a table you must specify the table name, the columns that make up the table and their data types. Apart from these 3, there are many more options available, some of which we will go over later in the course. 
