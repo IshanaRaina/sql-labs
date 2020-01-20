@@ -1,8 +1,10 @@
 <p align="center">
-<img src="https://i.imgur.com/GUCjlPE.png" width="600" height="400">
+<img src="https://i.imgur.com/367w4d4.png" width="650" height="300">
 </p>
 
 # SQL
+
+
 
 ## Let's Get Started
 
