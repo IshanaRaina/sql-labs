@@ -1,10 +1,10 @@
 <p align="center">
-<img src="https://i.imgur.com/367w4d4.png" width="650" height="300">
+<img src="https://i.imgur.com/367w4d4.png" width="500" height="250">
 </p>
 
 # SQL
 
-
+Data is everywhere! And SQL (or a flavor of SQL) is the language used to interact with the top 4 out of 5 database management systems at the time of writing according to [db-engines](https://db-engines.com/en/ranking_trend). In case you were wondering, SQL stands for **S**ructured **Q**uery **L**anguage or in other words, writing queries against structured data which is exactly what we have in store for you!
 
 ## Let's Get Started
 
